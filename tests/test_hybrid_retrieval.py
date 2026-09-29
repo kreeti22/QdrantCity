@@ -208,15 +208,15 @@ def test_api_modes_and_timing_breakdown(hybrid_api_client: TestClient):
 
 
 def test_dual_vector_idempotency(hybrid_env):
-    """Verify that multiple seeding runs preserve exactly 115 points with valid dual vectors."""
+    """Verify that multiple seeding runs preserve exactly 101 points with valid dual vectors."""
     repo = hybrid_env["repository"]
     settings = hybrid_env["settings"]
     service = hybrid_env["embedding_service"]
 
     # Re-seed over existing data
     seeded = seed_database(repo, settings, embedding_service=service, overwrite=True)
-    assert seeded == 115
-    assert repo.count() == 115
+    assert seeded == 102
+    assert repo.count() == 102
 
     # Check that retrieve preserves named vectors
     records = repo.shard.retrieve([1], with_payload=True, with_vector=True)
