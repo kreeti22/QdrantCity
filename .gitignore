@@ -1,0 +1,21 @@
+# Virtual Environment
+.venv/
+venv/
+ENV/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.pytest_cache/
+
+# Local Qdrant Edge runtime storage
+data/edge/
+data/memory/
+data/sync/
+tmp_test_*
+
+# Environment variables
+.env
+.env.local
+

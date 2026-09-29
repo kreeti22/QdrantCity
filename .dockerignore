@@ -1,0 +1,75 @@
+# ============================================================================
+# QdrantCinema Edge Platform — .dockerignore
+# Phase 3E: Deployment Packaging
+# ============================================================================
+# Excludes development artifacts, secrets, cached models, test data,
+# and ephemeral runtime data from the Docker build context.
+# ============================================================================
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Testing & coverage
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+tests/
+
+# Data (runtime-generated — mounted via Docker volumes in production)
+data/edge/
+data/memory/
+data/sync/
+
+# FastEmbed model cache (large ONNX weights — re-downloaded during build)
+data/models/
+
+# Secrets & configuration (never bake into image)
+.env
+.env.local
+.env.*.local
+
+# Git & version control
+.git/
+.gitignore
+.gitattributes
+
+# Editor & IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Documentation & markdown (not needed at runtime)
+README.md
+CHANGELOG.md
+*.md
+
+# CI/CD
+.github/
+.circleci/
+
+# Jupyter
+*.ipynb
+.ipynb_checkpoints/
+
+# Temporary files
+*.tmp
+*.bak
+*.log

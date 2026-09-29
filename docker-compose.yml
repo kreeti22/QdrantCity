@@ -1,0 +1,62 @@
+version: "3.8"
+
+# ============================================================================
+# QdrantCinema Edge Platform — Docker Compose
+# Phase 3E: Deployment Packaging
+# ============================================================================
+# Quick start:
+#   docker-compose up --build
+#
+# Access the UI:  http://localhost:8000/ui
+# API docs:       http://localhost:8000/docs
+# Health:         http://localhost:8000/live
+# Metrics:        http://localhost:8000/metrics
+# ============================================================================
+
+services:
+  qdrant-cinema-edge:
+    build: .
+    container_name: qdrant_cinema_edge
+    ports:
+      - "8000:8000"
+    environment:
+      # Application
+      - QDRANT_EDGE_ENVIRONMENT=production
+      - QDRANT_EDGE_LOG_LEVEL=INFO
+      # Storage (all under /app/data — single persistent volume)
+      - QDRANT_EDGE_EDGE_STORAGE_PATH=/app/data/edge
+      - QDRANT_EDGE_USER_MEMORY_PATH=/app/data/memory/user_memory.db
+      - QDRANT_EDGE_SYNC_CHECKPOINT_PATH=/app/data/sync/sync_checkpoint.json
+      # Retrieval
+      - QDRANT_EDGE_COLLECTION_NAME=city_experiences
+      - QDRANT_EDGE_EMBEDDING_MODEL_NAME=BAAI/bge-small-en-v1.5
+      - QDRANT_EDGE_VECTOR_SIZE=384
+      - QDRANT_EDGE_VECTOR_DISTANCE=Cosine
+      - QDRANT_EDGE_AUTO_SEED_ON_STARTUP=true
+      # Personalization
+      - QDRANT_EDGE_ENABLE_PERSONALIZATION=true
+      - QDRANT_EDGE_PERSONALIZATION_BOOST_WEIGHT=0.20
+      # Sync — disabled by default; set SYNC_SERVER_URL to enable
+      - QDRANT_EDGE_SYNC_ENABLED=false
+      # QDRANT_EDGE_SYNC_SERVER_URL: ""
+      # QDRANT_EDGE_SYNC_API_KEY: ""
+      # Rate limiting — disabled by default
+      - QDRANT_EDGE_RATE_LIMIT_SEARCH_ENABLED=false
+      - QDRANT_EDGE_RATE_LIMIT_SYNC_ENABLED=false
+    volumes:
+      # Persistent volume mounts at /app/data covering:
+      #   /app/data/edge       — Qdrant Edge shard (vectors + payloads)
+      #   /app/data/memory     — SQLite user memory & preferences
+      #   /app/data/sync       — Catalog sync checkpoint state
+      - edge_data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/live"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+volumes:
+  edge_data:
+    driver: local
