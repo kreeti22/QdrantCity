@@ -97,21 +97,30 @@ SUPPORTED_FORMATS = {
 
 # Known neighborhoods represented in dataset
 KNOWN_NEIGHBORHOODS = [
+    # Indian Metro Neighborhoods
+    "Bandra", "Juhu", "Colaba", "Khar", "Fort", "Dadar", "Andheri", "Worli", "Marine Drive", "Byculla", "Powai",
+    "Connaught Place", "Hauz Khas", "Mandi House", "Chandni Chowk", "Vasant Kunj", "Saket", "Lodhi", "Janpath", "Mehrauli",
+    "Koramangala", "Indiranagar", "Whitefield", "JP Nagar", "Malleshwaram", "MG Road", "Cubbon Park", "Jayanagar",
+    "Koregaon Park", "Kothrud", "Deccan", "Shivajinagar", "Camp", "Viman Nagar", "Baner", "Aundh",
+    # Legacy / baseline neighborhoods
     "Castro", "Mission", "SOMA", "Chinatown", "North Beach", "Marina",
     "Haight-Ashbury", "Haight", "Presidio", "Richmond", "Sunset", "Embarcadero",
     "Dogpatch", "Civic Center", "Downtown", "Pacific Heights", "Fisherman's Wharf",
-    "Bernal Heights", "Nob Hill", "Potrero Hill", "Hayes Valley", "Tenderloin",
-    "Balboa Park", "Alameda Point", "Bayview", "Excelsior",
 ]
 
 # Known venues represented in dataset
 KNOWN_VENUES = [
+    # Indian Cultural Venues & Landmarks
+    "Prithvi Theatre", "NCPA Mumbai", "National Centre for the Performing Arts", "Habitat Comedy Club",
+    "Shri Ram Centre", "Kamani Auditorium", "National Museum", "National Gallery of Modern Art", "NGMA",
+    "Ranga Shankara", "Bangalore International Centre", "Chowdiah Memorial Hall", "Museum of Art & Photography", "MAP",
+    "Bal Gandharva Ranga Mandir", "Raja Dinkar Kelkar Museum", "Shaniwar Wada", "High Spirits",
+    "Wankhede Stadium", "Feroz Shah Kotla", "Kanteerava Stadium", "Chhatrapati Shivaji Maharaj Vastu Sangrahalaya", "CSMVS",
+    # Legacy / baseline venues
     "Alamo Drafthouse Cinema", "Alamo Drafthouse", "The Roxie Cinema", "The Roxie",
     "Castro Theatre Pavilion", "Castro Theatre", "Balboa Theatre", "Vogue Theater",
     "OmniSphere IMAX Dome", "OmniSphere IMAX", "The Warfield", "Bimbo's 365 Club",
     "SFJAZZ Center", "SFJAZZ", "Great American Music Hall", "The Independent",
-    "Bottom of the Hill", "Cobb's Comedy Club", "Punch Line Comedy Club", "Punch Line",
-    "American Conservatory Theater", "Asian Art Museum", "BATS Improv Theatre",
 ]
 
 WEEKDAY_NAMES = {
@@ -517,13 +526,22 @@ class LocalQueryParser:
         neighborhood_field = None
         venue_field = None
 
-        # 1. City: San Francisco / SF
-        city_match = re.search(r"\b(?:San Francisco|SF)\b", text, re.IGNORECASE)
-        if city_match:
-            city_field = ExtractedField(
-                value="San Francisco", source=IntentSource.EXPLICIT, raw_token=city_match.group(0), confidence="high"
-            )
-            tokens_to_remove.append(city_match.group(0))
+        # 1. Cities: Indian metros & legacy
+        city_patterns = [
+            (r"\b(?:Mumbai|Bombay)\b", "Mumbai"),
+            (r"\b(?:Delhi|New Delhi|NCR)\b", "Delhi"),
+            (r"\b(?:Bengaluru|Bangalore)\b", "Bengaluru"),
+            (r"\b(?:Pune|Poona)\b", "Pune"),
+            (r"\b(?:San Francisco|SF)\b", "San Francisco"),
+        ]
+        for pat, canonical_city in city_patterns:
+            city_match = re.search(pat, text, re.IGNORECASE)
+            if city_match:
+                city_field = ExtractedField(
+                    value=canonical_city, source=IntentSource.EXPLICIT, raw_token=city_match.group(0), confidence="high"
+                )
+                tokens_to_remove.append(city_match.group(0))
+                break
 
         # 2. Venues (checked before neighborhoods to avoid partial overlap)
         for v in KNOWN_VENUES:

@@ -2,6 +2,7 @@
  * QueryChips Component
  *
  * Clickable quick-query chips below the search bar that populate and execute searches.
+ * India-specific searches with clean BookMyShow tag aesthetic.
  */
 
 export class QueryChips {
@@ -9,12 +10,13 @@ export class QueryChips {
     container,
     onSelect,
     chips = [
-      { label: "Comedy tonight", query: "comedy tonight" },
-      { label: "Movies this weekend", query: "movies this weekend" },
-      { label: "Concerts under $30", query: "concerts under $30" },
-      { label: "Outdoor activities", query: "outdoor activities" },
-      { label: "Something fun tonight", query: "something fun tonight" },
-      { label: "IMAX sci-fi", query: "IMAX sci-fi movies" },
+      { label: "Mumbai Heritage Walks", query: "Mumbai heritage walk" },
+      { label: "Delhi Sufi Qawwali", query: "Delhi sufi qawwali" },
+      { label: "Bangalore Comedy under ₹500", query: "Bangalore comedy under ₹500" },
+      { label: "Pune Classical Music", query: "Pune classical music" },
+      { label: "Prithvi Theatre Plays", query: "Prithvi Theatre plays" },
+      { label: "IMAX Movies", query: "IMAX sci-fi movies" },
+      { label: "Warli Painting Workshop", query: "Warli painting workshop" },
     ],
   }) {
     this.container = container;
@@ -25,8 +27,8 @@ export class QueryChips {
 
   render() {
     this.container.innerHTML = `
-      <div class="query-chips-wrapper" aria-label="Suggested natural-language queries">
-        <span class="chips-label">Popular searches:</span>
+      <div class="query-chips-wrapper" aria-label="Suggested searches">
+        <span class="chips-label">Popular:</span>
         <div class="chips-list">
           ${this.chips
             .map(

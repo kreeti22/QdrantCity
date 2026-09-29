@@ -1,11 +1,15 @@
 /**
  * SearchBar Component
  *
- * Prominent natural-language search bar with keyboard and submit button handling.
+ * Full-width BookMyShow-style search bar for movies, events, concerts and plays.
  */
 
 export class SearchBar {
-  constructor({ container, onSearch, placeholder = 'Try "comedy tonight under $50" or "indie film in Mission"' }) {
+  constructor({
+    container,
+    onSearch,
+    placeholder = "Search for Movies, Events, Plays, Sports and Activities...",
+  }) {
     this.container = container;
     this.onSearch = onSearch;
     this.placeholder = placeholder;
@@ -16,9 +20,9 @@ export class SearchBar {
 
   render() {
     this.container.innerHTML = `
-      <form class="search-form" id="search-form" role="search" aria-label="City experiences discovery search">
+      <form class="search-form" id="search-form" role="search" aria-label="Search movies and experiences">
         <div class="search-input-wrapper">
-          <svg class="search-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
@@ -29,14 +33,10 @@ export class SearchBar {
             placeholder="${this.placeholder}"
             autocomplete="off"
             spellcheck="false"
-            aria-label="Natural language search query"
+            aria-label="Search query"
           />
-          <button type="submit" id="search-submit-btn" class="search-submit-btn" aria-label="Submit Search">
-            <span>Discover</span>
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
+          <button type="submit" id="search-submit-btn" class="search-submit-btn" aria-label="Search">
+            <span>Search</span>
           </button>
         </div>
       </form>
@@ -83,11 +83,7 @@ export class SearchBar {
       this.buttonElement.disabled = isLoading;
       this.buttonElement.innerHTML = isLoading
         ? `<span class="spinner-small" aria-hidden="true"></span> Searching...`
-        : `<span>Discover</span>
-           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-             <line x1="5" y1="12" x2="19" y2="12"></line>
-             <polyline points="12 5 19 12 12 19"></polyline>
-           </svg>`;
+        : `<span>Search</span>`;
     }
   }
 }

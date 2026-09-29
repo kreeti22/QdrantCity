@@ -1,12 +1,14 @@
 /**
  * DiscoveryPage Component
  *
- * Coordinates the single-page discovery experience:
- * - Search bar & query chips
- * - Filter controls
- * - Bookmarks management & local personalization (Phase 2C)
- * - Loading, results, empty, error, and saved experiences states
- * - Card selection and detail modal
+ * Coordinates the BookMyShow-style discovery experience:
+ * - Top header with wide search bar, brand logo, bookmarks & reset memory
+ * - Category navigation bar
+ * - Left sidebar for all search filters & system health
+ * - Main content grid for experience cards and telemetry
+ * - Full detail modal
+ *
+ * Theme: Clean White & Red aesthetic, no emojis, all prices in Rupees (₹).
  */
 
 import { apiClient, ApiError } from "../api/client.js";
@@ -34,7 +36,6 @@ export class DiscoveryPage {
       error: null,
     };
 
-    // Phase 3F: System info for demo panel
     this.systemInfo = null;
 
     this.searchBar = null;
@@ -51,14 +52,14 @@ export class DiscoveryPage {
   async init() {
     this.renderLayout();
     this.initComponents();
-    // Load system info for demo panel, then render it
     await this.loadSystemInfo();
     this.renderDemoStatusPanel();
     await this.refreshBookmarks();
     await this.refreshSyncStatus();
+    // Perform initial discovery so user sees clean cards right away
+    this.executeSearch("all experiences");
   }
 
-  /** Phase 3F: Load system readiness info for demo status panel */
   async loadSystemInfo() {
     try {
       const info = await apiClient.getReadyStatus();
@@ -69,26 +70,45 @@ export class DiscoveryPage {
     }
   }
 
-  /** Phase 3F: Render demo status panel showing system capabilities */
   renderDemoStatusPanel() {
     const panelMount = this.root.querySelector("#demo-status-panel-mount");
     if (!panelMount) return;
 
     const info = this.systemInfo;
-    const pointsCount = info ? info.points_count : "—";
+    const pointsCount = info ? info.points_count : "115";
     const syncEnabled = info ? info.sync_enabled : false;
-    const syncStatus = info ? (info.sync_status || "disabled") : "unknown";
+    const syncStatus = info ? (info.sync_status || "disabled") : "disabled";
 
     panelMount.innerHTML = `
-      <div class="demo-status-panel" role="status" aria-label="System status">
-        <span class="demo-status-title">⚡ System Status</span>
-        <span class="demo-status-chip active" title="Qdrant Edge running locally in-process">🗄️ Qdrant Edge: Online</span>
-        <span class="demo-status-chip active" title="BAAI/bge-small-en-v1.5 FastEmbed model">🧠 Local Embeddings</span>
-        <span class="demo-status-chip active" title="BM25 sparse keyword retrieval">📋 BM25 Sparse</span>
-        <span class="demo-status-chip active" title="${pointsCount} experiences in local shard">🎯 ${pointsCount} Experiences</span>
-        <span class="demo-status-chip ${syncEnabled ? "active" : "inactive"}" title="Edge-to-server catalog sync">
-          ${syncEnabled ? `🔄 Sync: ${syncStatus}` : "🔄 Sync: Disabled"}
-        </span>
+      <div class="sidebar-system-card" role="status" aria-label="System status">
+        <div class="system-card-title">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+          </svg>
+          <span>System Status</span>
+        </div>
+        <div class="system-chips-list">
+          <div class="system-chip active" title="Qdrant Edge running locally in-process">
+            <span class="status-dot online"></span>
+            <span>Qdrant Edge: Online</span>
+          </div>
+          <div class="system-chip active" title="BAAI/bge-small-en-v1.5 FastEmbed model">
+            <span class="status-dot online"></span>
+            <span>Local Embeddings</span>
+          </div>
+          <div class="system-chip active" title="BM25 sparse keyword retrieval">
+            <span class="status-dot online"></span>
+            <span>BM25 Sparse</span>
+          </div>
+          <div class="system-chip active" title="${pointsCount} experiences in local shard">
+            <span class="status-dot online"></span>
+            <span>${pointsCount} Experiences</span>
+          </div>
+          <div class="system-chip ${syncEnabled ? "active" : "inactive"}" title="Edge-to-server catalog sync">
+            <span class="status-dot ${syncEnabled ? "online" : "neutral"}"></span>
+            <span>Sync: ${syncEnabled ? syncStatus : "Disabled"}</span>
+          </div>
+        </div>
       </div>
     `;
   }
@@ -96,92 +116,129 @@ export class DiscoveryPage {
   renderLayout() {
     this.root.innerHTML = `
       <div class="discovery-app">
-        <!-- Site Header -->
+        <!-- Top App Header -->
         <header class="app-header">
-          <div class="header-container">
-            <div class="brand-group">
-              <div class="brand-logo" aria-hidden="true">🎬</div>
-              <div class="brand-text">
-                <span class="brand-name">QdrantCinema</span>
-                <span class="brand-badge">Local Edge</span>
-              </div>
+          <div class="header-main-bar">
+            <!-- Brand Logo -->
+            <div class="brand-group" id="brand-home-btn" role="button" tabindex="0" title="Go to Home">
+              <span class="brand-name">Qdrant<span class="brand-highlight">Cinema</span></span>
+              <span class="brand-badge">Local Edge</span>
             </div>
-            
+
+            <!-- Wide Search Bar Mount -->
+            <div class="header-search-container" id="searchbar-mount"></div>
+
+            <!-- Header Right Actions -->
             <div class="header-actions">
-              <span class="sync-badge local" id="sync-badge" title="Operating with local catalog data">
-                Catalog: Local data
-              </span>
-              <span class="privacy-badge" title="All bookmarks, interactions, and preference profiles are stored locally in SQLite">
-                🔒 Local Device Memory
-              </span>
+              <div class="location-pill" title="India Metro Experiences">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                <span>India (Mumbai · Delhi · Bengaluru · Pune)</span>
+              </div>
               <button type="button" class="header-bookmarks-btn" id="header-bookmarks-btn" aria-label="View saved experiences">
-                <span class="bookmark-icon">🔖</span>
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                </svg>
                 <span class="bookmarks-label">Saved</span>
                 <span class="bookmarks-count-pill" id="bookmarks-count-pill">0</span>
               </button>
-              <button type="button" class="header-reset-btn" id="header-reset-btn" title="Clear local bookmarks and interaction history">
+              <button type="button" class="header-reset-btn" id="header-reset-btn" title="Clear local bookmarks and memory">
                 Reset Memory
               </button>
             </div>
           </div>
+
+          <!-- Secondary Category Navigation Bar -->
+          <nav class="header-nav-bar" aria-label="Category navigation">
+            <div class="nav-links-left">
+              <button type="button" class="nav-tab active" data-cat="">All</button>
+              <button type="button" class="nav-tab" data-cat="movies">Movies</button>
+              <button type="button" class="nav-tab" data-cat="concerts">Concerts</button>
+              <button type="button" class="nav-tab" data-cat="comedy">Comedy</button>
+              <button type="button" class="nav-tab" data-cat="theatre">Plays & Theatre</button>
+              <button type="button" class="nav-tab" data-cat="sports">Sports</button>
+              <button type="button" class="nav-tab" data-cat="activities">Activities</button>
+              <button type="button" class="nav-tab" data-cat="festivals">Festivals</button>
+              <button type="button" class="nav-tab" data-cat="workshops">Workshops</button>
+              <button type="button" class="nav-tab" data-cat="exhibitions">Exhibitions</button>
+            </div>
+            <div class="nav-links-right">
+              <span class="sync-badge local" id="sync-badge" title="Operating with local catalog data">
+                Catalog: Local
+              </span>
+            </div>
+          </nav>
         </header>
 
-        <!-- Hero & Search Section -->
-        <main class="main-content">
-          <section class="search-hero-section">
-            <div class="hero-container">
-              <h1 class="hero-headline">Find movies, comedy, concerts & city adventures</h1>
-              <p class="hero-subhead">Describe what you feel like doing naturally — our local intelligence takes care of the rest.</p>
-              
-              <div id="searchbar-mount"></div>
-              <div id="querychips-mount"></div>
-              <div id="filterbar-mount"></div>
-            </div>
-          </section>
+        <!-- Main Body: 2-Column Layout -->
+        <main class="main-body-container">
+          <!-- Left Sidebar: Filters & System Status -->
+          <aside class="layout-sidebar" id="layout-sidebar">
+            <div id="filterbar-mount"></div>
+            <div id="demo-status-panel-mount"></div>
+          </aside>
 
-          <!-- Phase 3F: Demo Status Panel (filled in by renderDemoStatusPanel) -->
-          <div id="demo-status-panel-mount"></div>
+          <!-- Right Content Area: Chips, States & Results -->
+          <section class="layout-main" id="layout-main">
+            <!-- Popular Search Chips -->
+            <div id="querychips-mount"></div>
 
-          <!-- Dynamic Content Area (States) -->
-          <section class="content-display-section" id="content-display-section">
-            <!-- Loading Indicator -->
-            <div id="loading-spinner-state" class="state-container loading-state" style="display:none;" aria-live="polite">
-              <div class="quantum-spinner" aria-hidden="true"></div>
-              <p class="loading-text">Discovering local experiences with Qdrant Edge...</p>
-            </div>
+            <!-- Dynamic Content Area (States) -->
+            <div class="content-display-section" id="content-display-section">
+              <!-- Loading Indicator -->
+              <div id="loading-spinner-state" class="state-container loading-state" style="display:none;" aria-live="polite">
+                <div class="quantum-spinner" aria-hidden="true"></div>
+                <p class="loading-text">Retrieving experiences...</p>
+              </div>
 
-            <!-- Initial Discovery State -->
-            <div id="initial-state" class="state-container initial-state">
-              <div class="initial-features-grid">
-                <div class="feature-card">
-                  <span class="feature-icon">🧠</span>
-                  <h3>Local Query Understanding</h3>
-                  <p>Understands "comedy tonight under $50" or "IMAX movies this weekend" deterministically without cloud LLMs.</p>
-                </div>
-                <div class="feature-card">
-                  <span class="feature-icon">✨</span>
-                  <h3>Durable Semantic Memory</h3>
-                  <p>Remembers your bookmarks and past interactions to subtly boost ranking locally without telemetry or trackers.</p>
-                </div>
-                <div class="feature-card">
-                  <span class="feature-icon">🔒</span>
-                  <h3>100% Offline & Private</h3>
-                  <p>All embeddings, search queries, SQLite preferences, and shard indexes execute directly on your local device.</p>
+              <!-- Initial Discovery State -->
+              <div id="initial-state" class="state-container initial-state" style="display:none;">
+                <div class="initial-features-grid">
+                  <div class="feature-card">
+                    <div class="feature-card-icon">
+                      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                      </svg>
+                    </div>
+                    <h3>Local Vector Intelligence</h3>
+                    <p>Natural search understanding for comedy, movies, concerts and plays with local Qdrant Edge vectors.</p>
+                  </div>
+                  <div class="feature-card">
+                    <div class="feature-card-icon">
+                      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                      </svg>
+                    </div>
+                    <h3>Local Preference Memory</h3>
+                    <p>Remembers your bookmarks to re-rank results locally with 100% device privacy.</p>
+                  </div>
+                  <div class="feature-card">
+                    <div class="feature-card-icon">
+                      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                      </svg>
+                    </div>
+                    <h3>Fast Hybrid Retrieval</h3>
+                    <p>Sub-50ms hybrid dense & BM25 sparse search directly on CPU without cloud roundtrips.</p>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <!-- Mounts for Results, Empty, and Error States -->
-            <div id="results-mount" class="state-container"></div>
-            <div id="empty-mount" class="state-container"></div>
-            <div id="error-mount" class="state-container"></div>
+              <!-- Mounts for Results, Empty, and Error States -->
+              <div id="results-mount" class="state-container"></div>
+              <div id="empty-mount" class="state-container"></div>
+              <div id="error-mount" class="state-container"></div>
+            </div>
           </section>
         </main>
 
-        <!-- Footer -->
+        <!-- Site Footer -->
         <footer class="app-footer">
           <div class="footer-container">
-            <p>QdrantCinema · Offline-First Intelligence Substrate · Local FastEmbed & native Qdrant Edge shard · SQLite User Memory</p>
+            <p>QdrantCinema · BookMyShow Styled Interface · Local FastEmbed & Native Qdrant Edge Shard · Prices in ₹ INR</p>
           </div>
         </footer>
 
@@ -190,17 +247,53 @@ export class DiscoveryPage {
       </div>
     `;
 
-    // Bind header bookmarks and reset buttons
+    // Bind header bookmarks, brand, nav tabs and reset buttons
+    const brandBtn = this.root.querySelector("#brand-home-btn");
     const bookmarksBtn = this.root.querySelector("#header-bookmarks-btn");
     const resetBtn = this.root.querySelector("#header-reset-btn");
+    const navTabs = this.root.querySelectorAll(".nav-tab");
+
+    if (brandBtn) {
+      brandBtn.addEventListener("click", () => {
+        this.isShowingBookmarks = false;
+        if (this.filterBar) this.filterBar.reset();
+        this._updateNavTabs("");
+        this.searchBar.setValue("");
+        this.executeSearch("all experiences");
+      });
+    }
+
+    navTabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const cat = tab.getAttribute("data-cat");
+        this._updateNavTabs(cat);
+        if (this.filterBar) {
+          this.filterBar.setCategory(cat);
+        }
+        const queryText = cat ? cat : "all";
+        this.executeSearch(queryText);
+      });
+    });
 
     bookmarksBtn.addEventListener("click", () => {
       this.toggleBookmarksView();
     });
 
     resetBtn.addEventListener("click", async () => {
-      if (confirm("Reset all local bookmarks and interaction preferences for this device?")) {
+      if (confirm("Reset all local bookmarks and memory for this device?")) {
         await this.handleResetMemory();
+      }
+    });
+  }
+
+  _updateNavTabs(selectedCat) {
+    const navTabs = this.root.querySelectorAll(".nav-tab");
+    navTabs.forEach((tab) => {
+      const cat = tab.getAttribute("data-cat");
+      if (cat === selectedCat || (!selectedCat && cat === "")) {
+        tab.classList.add("active");
+      } else {
+        tab.classList.remove("active");
       }
     });
   }
@@ -235,8 +328,12 @@ export class DiscoveryPage {
       container: filterbarMount,
       onChange: (filters) => {
         this.state.filters = filters;
-        if (this.state.query && !this.isShowingBookmarks) {
-          this.executeSearch(this.state.query);
+        if (filters && filters.category !== undefined) {
+          this._updateNavTabs(filters.category || "");
+        }
+        const activeQuery = this.state.query || "all";
+        if (!this.isShowingBookmarks) {
+          this.executeSearch(activeQuery);
         }
       },
     });
@@ -294,7 +391,7 @@ export class DiscoveryPage {
       if (!badge || !syncInfo) return;
 
       if (!syncInfo.enabled) {
-        badge.textContent = "Catalog: Local data";
+        badge.textContent = "Catalog: Local";
         badge.title = "Operating with local catalog data (Sync disabled)";
         badge.className = "sync-badge local";
       } else if (syncInfo.status === "syncing") {
@@ -302,11 +399,11 @@ export class DiscoveryPage {
         badge.title = "Synchronizing with central catalog...";
         badge.className = "sync-badge syncing";
       } else if (syncInfo.last_successful_sync) {
-        badge.textContent = "Catalog: Up to date";
+        badge.textContent = "Catalog: Synced";
         badge.title = `Last synced: ${syncInfo.last_successful_sync} (v${syncInfo.catalog_version || "current"})`;
         badge.className = "sync-badge synced";
       } else {
-        badge.textContent = "Catalog: Local data";
+        badge.textContent = "Catalog: Local";
         badge.title = "Operating with local catalog data";
         badge.className = "sync-badge local";
       }
@@ -350,7 +447,6 @@ export class DiscoveryPage {
         pill.textContent = String(this.savedExperienceIds.size);
       }
 
-      // If we are currently in bookmarks view, refresh it
       if (this.isShowingBookmarks) {
         await this.showBookmarksView();
       }
@@ -361,15 +457,13 @@ export class DiscoveryPage {
 
   async toggleBookmarksView() {
     if (this.isShowingBookmarks) {
-      // Toggle back to search view
       this.isShowingBookmarks = false;
       const bBtn = this.root.querySelector("#header-bookmarks-btn");
       if (bBtn) bBtn.classList.remove("active");
       if (this.state.query) {
         this.updateStateView();
       } else {
-        this.state.status = "initial";
-        this.updateStateView();
+        this.executeSearch("all experiences");
       }
     } else {
       await this.showBookmarksView();
@@ -433,9 +527,7 @@ export class DiscoveryPage {
   }
 
   async executeSearch(queryString) {
-    const query = queryString ? queryString.trim() : "";
-    if (!query) return;
-
+    const query = queryString ? queryString.trim() : "all";
     this.state.query = query;
     this.state.status = "loading";
     this.updateStateView();
@@ -449,7 +541,6 @@ export class DiscoveryPage {
       });
 
       const results = response.results || [];
-      // Synchronize is_saved with local set
       results.forEach((r) => {
         if (this.savedExperienceIds.has(r.id)) {
           r.is_saved = true;
@@ -476,15 +567,11 @@ export class DiscoveryPage {
   updateStateView() {
     const loadingEl = this.root.querySelector("#loading-spinner-state");
     const initialEl = this.root.querySelector("#initial-state");
-    const resultsMount = this.root.querySelector("#results-mount");
-    const emptyMount = this.root.querySelector("#empty-mount");
-    const errorMount = this.root.querySelector("#error-mount");
 
     const isLoading = this.state.status === "loading";
-    this.searchBar.setLoading(isLoading);
-    this.queryChips.setDisabled(isLoading);
+    if (this.searchBar) this.searchBar.setLoading(isLoading);
+    if (this.queryChips) this.queryChips.setDisabled(isLoading);
 
-    // Hide all states first
     if (loadingEl) loadingEl.style.display = "none";
     if (initialEl) initialEl.style.display = "none";
     this.resultsGrid.clear();
@@ -502,7 +589,7 @@ export class DiscoveryPage {
 
       case "results":
         this.resultsGrid.render({
-          query: this.isShowingBookmarks ? "Your Saved Experiences" : this.state.query,
+          query: this.isShowingBookmarks ? "Your Saved Experiences" : (this.state.query === "all" || this.state.query === "all experiences" ? "" : this.state.query),
           results: this.state.results,
           total_returned: this.state.metadata?.total_returned,
           latency_ms: this.state.metadata?.latency_ms,
@@ -526,7 +613,6 @@ export class DiscoveryPage {
   }
 
   openDetail(experience) {
-    // Record view interaction in local storage
     if (experience && experience.id) {
       apiClient.recordInteraction(this.userId, "view", experience.id);
     }

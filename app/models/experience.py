@@ -1,5 +1,6 @@
 from enum import Enum
 from typing import Any, Dict, List, Literal, Optional
+# pyrefly: ignore [missing-import]
 from pydantic import BaseModel, Field, model_validator
 
 
@@ -36,16 +37,21 @@ class ExperiencePayload(BaseModel):
     subcategories: List[str] = Field(default_factory=list, description="Descriptive subcategories/tags")
     description: str = Field(..., description="Rich textual summary of the event")
     venue: str = Field(..., description="Venue or location name")
-    neighborhood: str = Field(..., description="Neighborhood or district within the city")
+    neighborhood: str = Field(default="", description="Neighborhood or district within the city")
     city: str = Field(..., description="City where experience occurs")
+    state: Optional[str] = Field(default="India", description="State or province")
     price: float = Field(..., ge=0.0, description="Admission/ticket price")
-    currency: str = Field(default="USD", description="ISO currency code")
+    currency: str = Field(default="INR", description="ISO currency code")
     is_indoor: bool = Field(..., description="Whether the event takes place indoors")
     rating: float = Field(default=0.0, ge=0.0, le=5.0, description="Average review score")
     start_time: str = Field(..., description="ISO 8601 formatted start datetime")
     end_time: str = Field(..., description="ISO 8601 formatted end datetime")
     image_url: Optional[str] = Field(default=None, description="Hero or banner image URL")
     language: Optional[str] = Field(default=None, description="Primary performance or audio language")
+    source_url: Optional[str] = Field(default=None, description="Reference or official source URL")
+    image_credit: Optional[str] = Field(default=None, description="Image attribution or license")
+    last_verified: Optional[str] = Field(default="2026-09", description="Verification timestamp")
+    demo_data: Optional[bool] = Field(default=False, description="Whether record is demo/illustrative data")
 
 
 class Experience(BaseModel):
@@ -65,16 +71,21 @@ class ExperienceSearchResult(BaseModel):
     description: str = Field(..., description="Descriptive summary of the experience")
     venue: Optional[str] = Field(default=None, description="Venue or landmark name")
     city: Optional[str] = Field(default=None, description="City name")
+    state: Optional[str] = Field(default=None, description="State name")
     neighborhood: Optional[str] = Field(default=None, description="Neighborhood or district")
     start_time: Optional[str] = Field(default=None, description="ISO 8601 formatted start datetime")
     end_time: Optional[str] = Field(default=None, description="ISO 8601 formatted end datetime")
     price: Optional[float] = Field(default=None, description="Admission/ticket price")
-    currency: Optional[str] = Field(default="USD", description="ISO currency code")
+    currency: Optional[str] = Field(default="INR", description="ISO currency code")
     image_url: Optional[str] = Field(default=None, description="Hero image URL")
     subcategories: List[str] = Field(default_factory=list, description="Descriptive tags/subcategories")
     language: Optional[str] = Field(default=None, description="Primary performance or audio language")
     is_indoor: Optional[bool] = Field(default=None, description="Whether event takes place indoors")
     rating: Optional[float] = Field(default=None, description="Average review score")
+    source_url: Optional[str] = Field(default=None, description="Source URL")
+    image_credit: Optional[str] = Field(default=None, description="Image attribution or license")
+    last_verified: Optional[str] = Field(default=None, description="Last verification date")
+    demo_data: Optional[bool] = Field(default=None, description="Whether record is demo data")
     payload: Dict[str, Any] = Field(default_factory=dict, description="Raw point payload dictionary for backwards compatibility")
     dense_score: Optional[float] = Field(default=None, description="Score from dense semantic retrieval")
     dense_rank: Optional[int] = Field(default=None, description="1-based rank from dense retrieval")
@@ -92,8 +103,9 @@ class ExperienceSearchResult(BaseModel):
             if isinstance(p, dict):
                 # Pull top-level card attributes from payload if not explicitly supplied
                 for field in [
-                    "venue", "city", "neighborhood", "start_time", "end_time",
-                    "currency", "image_url", "language", "subcategories"
+                    "venue", "city", "state", "neighborhood", "start_time", "end_time",
+                    "currency", "image_url", "language", "subcategories",
+                    "source_url", "image_credit", "last_verified", "demo_data"
                 ]:
                     if data.get(field) is None and field in p:
                         data[field] = p[field]

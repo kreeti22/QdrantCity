@@ -26,6 +26,8 @@ def build_bm25_text(experience: Union[ExperiencePayload, Dict[str, Any]]) -> str
     venue = (data.get("venue") or "").strip()
     neighborhood = (data.get("neighborhood") or "").strip()
     city = (data.get("city") or "").strip()
+    state = (data.get("state") or "").strip()
+    language = (data.get("language") or "").strip()
     description = (data.get("description") or "").strip()
 
     tokens = [title]
@@ -33,12 +35,16 @@ def build_bm25_text(experience: Union[ExperiencePayload, Dict[str, Any]]) -> str
         tokens.append(category)
     if subcat_str:
         tokens.append(subcat_str)
+    if language:
+        tokens.append(language)
     if venue:
         tokens.append(venue)
     if neighborhood:
         tokens.append(neighborhood)
     if city:
         tokens.append(city)
+    if state:
+        tokens.append(state)
     if description:
         tokens.append(description)
 

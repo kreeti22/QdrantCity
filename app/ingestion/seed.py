@@ -98,6 +98,15 @@ def seed_database(
         embedding_service=embedding_service,
         settings=settings,
     )
+
+    # If overwriting and old collection had more items, clean up excess IDs
+    if current_count > len(experiences):
+        excess_ids = list(range(len(experiences) + 1, current_count + 50))
+        try:
+            repository.delete_experiences(excess_ids)
+        except Exception as e:
+            logger.debug(f"Non-fatal error clearing excess IDs: {e}")
+
     count = repository.upsert_experiences(experiences)
     logger.info(f"Seeded {count} experiences into collection '{settings.collection_name}' at {settings.full_collection_path}")
     return count

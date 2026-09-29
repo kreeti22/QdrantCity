@@ -4,7 +4,7 @@
 
 /**
  * Converts an ISO 8601 timestamp (e.g. 2026-10-15T22:00:00Z) to a human-friendly format:
- * "Thu, Oct 15 · 10:00 PM"
+ * "Thu, 15 Oct · 10:00 PM"
  */
 export function formatDateTime(isoString) {
   if (!isoString) return "Date TBA";
@@ -15,8 +15,8 @@ export function formatDateTime(isoString) {
 
     const dateOptions = {
       weekday: "short",
-      month: "short",
       day: "numeric",
+      month: "short",
     };
     const timeOptions = {
       hour: "numeric",
@@ -24,8 +24,8 @@ export function formatDateTime(isoString) {
       hour12: true,
     };
 
-    const datePart = date.toLocaleDateString(undefined, dateOptions);
-    const timePart = date.toLocaleTimeString(undefined, timeOptions);
+    const datePart = date.toLocaleDateString("en-IN", dateOptions);
+    const timePart = date.toLocaleTimeString("en-IN", timeOptions);
 
     return `${datePart} · ${timePart}`;
   } catch (err) {
@@ -34,32 +34,26 @@ export function formatDateTime(isoString) {
 }
 
 /**
- * Formats price and currency:
+ * Formats price and currency in Indian Rupees (₹):
  * - Free if 0
- * - ₹800, $25, etc.
+ * - ₹250, ₹1,200, etc.
  */
-export function formatPrice(price, currency = "USD") {
+export function formatPrice(price, currency = "INR") {
   if (price === 0 || price === "0") return "Free";
   if (price === null || price === undefined) return "Price TBA";
 
   const num = Number(price);
   if (isNaN(num)) return "Price TBA";
 
-  const isInt = num % 1 === 0;
-  const formattedNum = isInt ? num.toFixed(0) : num.toFixed(2);
+  return `₹${Math.round(num).toLocaleString("en-IN")}`;
+}
 
-  const currUpper = String(currency || "USD").toUpperCase();
-  if (currUpper === "USD" || currUpper === "$") {
-    return `$${formattedNum}`;
-  } else if (currUpper === "INR" || currUpper === "RS" || currUpper === "₹") {
-    return `₹${formattedNum}`;
-  } else if (currUpper === "EUR" || currUpper === "€") {
-    return `€${formattedNum}`;
-  } else if (currUpper === "GBP" || currUpper === "£") {
-    return `£${formattedNum}`;
-  }
-
-  return `${currUpper} ${formattedNum}`;
+/**
+ * Cleans long titles to be concise and specific (e.g. "Dune: Part Two Special Screening" -> "Dune: Part Two").
+ */
+export function cleanDisplayTitle(title) {
+  if (!title) return "Untitled";
+  return String(title).trim();
 }
 
 /**

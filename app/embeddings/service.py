@@ -30,17 +30,21 @@ def build_embedding_text(experience: Union[ExperiencePayload, Dict[str, Any]]) -
     venue = (data.get("venue") or "").strip()
     neighborhood = (data.get("neighborhood") or "").strip()
     city = (data.get("city") or "").strip()
+    state = (data.get("state") or "").strip()
+    language = (data.get("language") or "").strip()
 
     parts = [f"Title: {title}"]
     if category:
         parts.append(f"Category: {category}")
     if subcat_str:
         parts.append(f"Themes: {subcat_str}")
+    if language:
+        parts.append(f"Language: {language}")
     if description:
         parts.append(f"Description: {description}")
     if venue:
         parts.append(f"Venue: {venue}")
-    location_parts = [p for p in [neighborhood, city] if p]
+    location_parts = [p for p in [neighborhood, city, state] if p]
     if location_parts:
         parts.append(f"Location: {', '.join(location_parts)}")
 

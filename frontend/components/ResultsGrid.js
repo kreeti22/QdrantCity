@@ -2,6 +2,7 @@
  * ResultsGrid Component
  *
  * Renders the responsive grid of search results, result counts, and metadata telemetry.
+ * Styled in clean BookMyShow white and red aesthetic without emojis.
  */
 
 import { ExperienceCard } from "./ExperienceCard.js";
@@ -32,8 +33,8 @@ export class ResultsGrid {
             </h2>
             ${
               isPersonalized
-                ? `<span class="personalization-badge" title="Results re-ranked based on your saved items and local preferences">
-                    ✨ Personalized for you
+                ? `<span class="personalization-badge" title="Results tailored to your saved preferences">
+                    Personalized for you
                    </span>`
                 : ""
             }
@@ -41,7 +42,12 @@ export class ResultsGrid {
           ${
             totalLatency
               ? `<div class="results-telemetry" title="Local CPU Retrieval Latency">
-                  <span class="telemetry-badge">⚡ ${totalLatency}</span>
+                  <span class="telemetry-badge">
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                    <span>${totalLatency}</span>
+                  </span>
                  </div>`
               : ""
           }

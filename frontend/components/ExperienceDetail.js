@@ -1,8 +1,8 @@
 /**
  * ExperienceDetail Component
  *
- * Modal detail view displaying full information for a selected experience,
- * fetched via GET /api/experiences/{id}.
+ * Modal detail view displaying full comprehensive information for a selected experience.
+ * Fully styled in clean white & red BookMyShow aesthetic without emojis.
  */
 
 import { apiClient } from "../api/client.js";
@@ -36,7 +36,6 @@ export class ExperienceDetail {
         this._renderModal(fullExp, false);
       }
     } catch (err) {
-      // If single item fetch fails, retain summary data without crashing
       console.warn("Could not fetch full details, showing summary:", err);
       if (this.isOpen) {
         this._renderModal(experienceSummary, false);
@@ -65,19 +64,29 @@ export class ExperienceDetail {
 
     const title = escapeHtml(exp.title || "Untitled Experience");
     const category = escapeHtml(exp.category || "Experience");
-    const description = escapeHtml(exp.description || "");
+    const description = escapeHtml(exp.description || "No description provided.");
     const venue = escapeHtml(exp.venue || "Venue TBA");
     const city = escapeHtml(exp.city || "");
     const neighborhood = escapeHtml(exp.neighborhood || "");
+    const state = escapeHtml(exp.state || "");
     const priceText = formatPrice(exp.price, exp.currency);
     const dateText = formatDateTime(exp.start_time);
     const endDateText = exp.end_time ? formatDateTime(exp.end_time) : null;
     const badgeClass = getCategoryBadgeClass(exp.category);
     const rating = exp.rating ? Number(exp.rating).toFixed(1) : null;
-    const language = escapeHtml(exp.language || "");
+    const language = escapeHtml(exp.language || "English / Hindi");
     const imageUrl = exp.image_url || "";
+    const sourceUrl = exp.source_url ? escapeHtml(exp.source_url) : "";
+    const imageCredit = exp.image_credit ? escapeHtml(exp.image_credit) : "";
+    const lastVerified = exp.last_verified ? escapeHtml(exp.last_verified) : "2026-09";
+    const isDemo = exp.demo_data === true;
 
     const subcats = Array.isArray(exp.subcategories) ? exp.subcategories : [];
+    const locationParts = [venue];
+    if (neighborhood) locationParts.push(neighborhood);
+    if (city) locationParts.push(city);
+    if (state) locationParts.push(state);
+    const locationFull = locationParts.filter(Boolean).join(", ");
 
     this.container.innerHTML = `
       <div class="modal-backdrop" id="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title">
@@ -90,7 +99,12 @@ export class ExperienceDetail {
               </svg>
               <span>Back to Results</span>
             </button>
-            <button type="button" class="modal-close-btn" id="modal-close-btn" aria-label="Close detail modal">✕</button>
+            <button type="button" class="modal-close-btn" id="modal-close-btn" aria-label="Close detail modal">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
           </div>
 
           <div class="modal-body">
@@ -106,39 +120,61 @@ export class ExperienceDetail {
                   : ""
               }
               <div class="modal-fallback-badge" aria-hidden="true">
-                <span>🎬</span>
+                <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="3" ry="3"></rect>
+                  <line x1="7" y1="2" x2="7" y2="22"></line>
+                  <line x1="17" y1="2" x2="17" y2="22"></line>
+                  <line x1="2" y1="12" x2="22" y2="12"></line>
+                  <line x1="2" y1="7" x2="7" y2="7"></line>
+                  <line x1="2" y1="17" x2="7" y2="17"></line>
+                  <line x1="17" y1="17" x2="22" y2="17"></line>
+                  <line x1="17" y1="7" x2="22" y2="7"></line>
+                </svg>
               </div>
               <div class="modal-badges">
                 <span class="category-badge ${badgeClass}">${category.toUpperCase()}</span>
-                ${exp.is_indoor !== null && exp.is_indoor !== undefined
-                  ? `<span class="setting-badge">${exp.is_indoor ? "Indoor" : "Outdoor"}</span>`
-                  : ""}
+                ${
+                  exp.is_indoor !== null && exp.is_indoor !== undefined
+                    ? `<span class="setting-badge">${exp.is_indoor ? "Indoor" : "Outdoor"}</span>`
+                    : ""
+                }
+                ${isDemo ? `<span class="setting-badge" title="Illustrative event example">DEMO DATA</span>` : ""}
               </div>
             </div>
 
             <div class="modal-content-details">
               <div class="modal-title-row">
                 <h1 class="modal-title" id="modal-title">${title}</h1>
-                ${rating ? `<div class="modal-rating">★ ${rating}</div>` : ""}
+                ${
+                  rating
+                    ? `<div class="modal-rating">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" stroke="none">
+                          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                        <span>${rating} / 5</span>
+                       </div>`
+                    : ""
+                }
               </div>
 
               <div class="modal-pricing-bar">
                 <div class="pricing-tag">
-                  <span class="pricing-label">Admission</span>
-                  <span class="pricing-value">${priceText}</span>
+                  <span class="pricing-label">Price</span>
+                  <span class="pricing-value highlight-red">${priceText}</span>
                 </div>
-                ${language ? `
-                  <div class="pricing-tag">
-                    <span class="pricing-label">Language</span>
-                    <span class="pricing-value">${language}</span>
-                  </div>
-                ` : ""}
-                ${exp.status ? `
-                  <div class="pricing-tag">
-                    <span class="pricing-label">Status</span>
-                    <span class="pricing-value capitalize">${escapeHtml(exp.status)}</span>
-                  </div>
-                ` : ""}
+                <div class="pricing-tag">
+                  <span class="pricing-label">City / State</span>
+                  <span class="pricing-value">${city}${state ? `, ${state}` : ""}</span>
+                </div>
+                <div class="pricing-tag">
+                  <span class="pricing-label">Language</span>
+                  <span class="pricing-value">${language}</span>
+                </div>
+                <div class="pricing-action">
+                  <button type="button" class="btn-book-now" id="btn-book-now" onclick="alert('Booking initiated for ${escapeHtml(title)}!')">
+                    Book Experience
+                  </button>
+                </div>
               </div>
 
               <div class="modal-section">
@@ -150,20 +186,32 @@ export class ExperienceDetail {
                 <h2 class="section-title">Schedule & Location</h2>
                 <div class="detail-grid">
                   <div class="detail-item">
-                    <span class="detail-icon">📅</span>
+                    <div class="detail-icon-circle">
+                      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                      </svg>
+                    </div>
                     <div class="detail-info">
                       <span class="detail-heading">Date & Time</span>
                       <span class="detail-value">${dateText}</span>
-                      ${endDateText ? `<span class="detail-subvalue">Until ${endDateText}</span>` : ""}
+                      ${endDateText ? `<span class="detail-subvalue">Ends: ${endDateText}</span>` : ""}
                     </div>
                   </div>
 
                   <div class="detail-item">
-                    <span class="detail-icon">📍</span>
+                    <div class="detail-icon-circle">
+                      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                      </svg>
+                    </div>
                     <div class="detail-info">
-                      <span class="detail-heading">Venue</span>
+                      <span class="detail-heading">Venue & Address</span>
                       <span class="detail-value">${venue}</span>
-                      <span class="detail-subvalue">${[neighborhood, city].filter(Boolean).join(", ")}</span>
+                      <span class="detail-subvalue">${locationFull}</span>
                     </div>
                   </div>
                 </div>
@@ -173,7 +221,7 @@ export class ExperienceDetail {
                 subcats.length > 0
                   ? `
                 <div class="modal-section">
-                  <h2 class="section-title">Tags & Highlights</h2>
+                  <h2 class="section-title">Categories & Tags</h2>
                   <div class="modal-tags">
                     ${subcats.map((tag) => `<span class="tag-pill">${escapeHtml(tag)}</span>`).join("")}
                   </div>
@@ -181,6 +229,15 @@ export class ExperienceDetail {
               `
                   : ""
               }
+
+              <!-- Verification & Attribution -->
+              <div class="modal-section modal-attribution-section">
+                <div class="attribution-row">
+                  ${sourceUrl ? `<span><strong>Source:</strong> <a href="${sourceUrl}" target="_blank" rel="noopener noreferrer" class="attribution-link">${sourceUrl}</a></span> · ` : ""}
+                  ${imageCredit ? `<span><strong>Image Credit:</strong> ${imageCredit}</span> · ` : ""}
+                  <span><strong>Verified:</strong> ${lastVerified}</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>

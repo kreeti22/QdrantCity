@@ -1,15 +1,14 @@
 /**
- * ErrorState Component — Phase 3F: UX Polish
+ * ErrorState Component
  *
- * Friendly error presentation with safe error message display,
- * retry action, and example query shortcuts so users can recover easily.
+ * Friendly error presentation without emojis.
  */
 
 import { escapeHtml } from "../utilities/formatting.js";
 
 const RECOVERY_QUERIES = [
-  { label: "Comedy Tonight", query: "comedy tonight" },
-  { label: "Movies This Weekend", query: "movies this weekend" },
+  { label: "Movies this Weekend", query: "movies this weekend" },
+  { label: "Comedy Shows", query: "comedy tonight" },
   { label: "Live Music", query: "live music events" },
 ];
 
@@ -20,11 +19,9 @@ export class ErrorState {
   }
 
   render({ error, query, onSuggestionClick }) {
-    // Display user-friendly message — never expose stack traces or internal details
     const rawMessage =
       error && error.message ? error.message : "An unexpected error occurred while searching.";
 
-    // Truncate overly long messages for safety
     const message =
       rawMessage.length > 200 ? rawMessage.slice(0, 200) + "…" : rawMessage;
 
@@ -40,14 +37,20 @@ export class ErrorState {
 
     let hint = "";
     if (isRateLimit) {
-      hint = `<p class="error-hint">⏳ You've made many requests recently. Please wait a moment before searching again.</p>`;
+      hint = `<p class="error-hint">Too many requests recently. Please wait a moment before searching again.</p>`;
     } else if (isOffline) {
-      hint = `<p class="error-hint">📡 Cannot reach the local server. Make sure the backend is running on <code>http://localhost:8000</code>.</p>`;
+      hint = `<p class="error-hint">Cannot reach the local backend server. Make sure the backend is running on <code>http://localhost:8000</code>.</p>`;
     }
 
     this.container.innerHTML = `
       <div class="error-state" role="alert">
-        <div class="error-icon" aria-hidden="true">⚠️</div>
+        <div class="error-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        </div>
         <div class="error-content">
           <h3 class="error-title">Unable to Complete Search</h3>
           <p class="error-message">${escapeHtml(message)}</p>
@@ -67,7 +70,7 @@ export class ErrorState {
             </button>
           </div>
           <div class="error-recovery">
-            <p class="suggestions-label">Or try one of these searches:</p>
+            <p class="suggestions-label">Or try one of these:</p>
             <div class="empty-query-chips">
               ${RECOVERY_QUERIES.map(
                 (e) =>
