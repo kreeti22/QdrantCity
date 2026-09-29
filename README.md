@@ -2,7 +2,39 @@
 
 > **Architectural Principle:** Qdrant Edge is the local intelligence substrate, not an add-on vector database.
 
-QdrantCinema is an offline-first city experiences discovery platform designed to execute deterministic local query understanding and hybrid dense semantic + sparse BM25 retrieval locally in-process without any cloud LLM, external embedding APIs, or external search servers.
+QdrantCinema is an **offline-first city experiences discovery platform** powered by Qdrant Edge running fully in-process — no cloud LLM, no external embedding API, no external search server.
+
+## ⚡ Quick Start (5 minutes)
+
+```bash
+# 1. Install dependencies
+pip install -r requirements.txt
+
+# 2. Start the server (auto-seeds 115 experiences on first run)
+uvicorn app.main:app --host 0.0.0.0 --port 8000
+
+# 3. Open the discovery UI
+#    http://localhost:8000/ui
+
+# 4. Or use Docker
+#    docker-compose up --build
+```
+
+**Key endpoints:**
+| URL | Purpose |
+|---|---|
+| `http://localhost:8000/ui` | Discovery UI |
+| `http://localhost:8000/docs` | Interactive API docs |
+| `http://localhost:8000/live` | Liveness probe |
+| `http://localhost:8000/metrics` | Operational metrics |
+
+**What makes it different:**
+- 🔒 **100% offline** — all embeddings, search, and memory run locally on CPU
+- 🧠 **Hybrid retrieval** — dense semantic (FastEmbed) + sparse BM25 fused via RRF
+- 🎯 **Local query understanding** — parses "comedy tonight under $50" deterministically, no LLM
+- 💾 **Privacy-first user memory** — bookmarks + preferences stored in local SQLite only
+- 🔄 **Optional catalog sync** — pull catalog updates from a central server when online
+- 150 automated tests passing
 
 ---
 
@@ -515,13 +547,23 @@ docker-compose up --build
 ```
 Consolidated `/app/data` volume covers edge shards, SQLite user memory, and sync checkpoints.
 
-### 3F — 5-Minute Hackathon Demo Script
-1. Open `http://localhost:8000/ui` — demo status panel shows live system capabilities
-2. Search naturally: `"comedy tonight under $50"`, `"IMAX movies this weekend"`, `"free outdoor festivals"`
-3. Bookmark a result — count updates instantly in header
-4. Search again — personalized results boosted by bookmark/interaction signal
-5. Click **Reset Memory** to clear local state for a clean demo
-6. Visit `GET /metrics` to show live search count + latency percentiles
+### Hackathon Demo Flow (5-Minute Walkthrough)
+
+**Startup Command:**
+```bash
+uvicorn app.main:app --host 0.0.0.0 --port 8000
+```
+
+1. **Open `/ui`**: Navigate to `http://localhost:8000/ui` in your browser.
+2. **Natural-Language Hybrid Search**: Enter queries like `"comedy tonight under $50"`.
+3. **Semantic & BM25 Results**: Observe parsed intent, filters applied, and fused results with latency breakdown.
+4. **Bookmark an Experience**: Click the bookmark icon on any card; counter updates in header.
+5. **Personalized Search**: Search again (e.g. `"live shows"`) to trigger personalized ranking.
+6. **`✨ Personalized for you`**: Verify the boost pill appears on preference-aligned experiences.
+7. **`🔒 Local Device Memory`**: Highlight SQLite-backed private storage (zero tracking/telemetry).
+8. **Catalog Sync Status**: Check header sync badge indicating local shard status.
+9. **Operational Metrics**: Visit `http://localhost:8000/metrics` to show real-time query counts and P50/P95 latencies.
+10. **Offline/Local Architecture**: Explain that FastEmbed, BM25, and Qdrant Edge run 100% locally in-process on CPU.
 
 ### 3H — Performance Benchmarks (Windows 11, Python 3.11, warm shard)
 
