@@ -218,7 +218,7 @@ export class RouteModal {
       const durMin = Math.max(1, Math.round((res.duration_s || res.distance_m / 8.33) / 60.0));
       const isLocal = res.source === "local_osm";
       const sourceBadgeClass = isLocal ? "badge-local" : (res.source === "online_osrm" ? "badge-online" : "badge-fallback");
-      const sourceLabel = isLocal ? "LOCAL OSM ROAD GRAPH" : (res.source === "online_osrm" ? "ONLINE OSRM ROUTE" : "DIRECT LOCAL ROUTE");
+      const sourceLabel = isLocal ? "LOCAL OSM ROUTE" : (res.source === "online_osrm" ? "ONLINE ROUTE FALLBACK" : "DIRECT LOCAL ROUTE");
 
       banner.className = `route-telemetry-banner ${sourceBadgeClass}`;
       banner.innerHTML = `

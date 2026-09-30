@@ -13,9 +13,17 @@ __pycache__/
 data/edge/
 data/memory/
 data/sync/
+data/test_edge*/
+tmp/
 tmp_test_*
+*.db
+*.sqlite
+*.sqlite3
+*.dat
+*.mmap
 
 # Environment variables
 .env
 .env.local
+
 
