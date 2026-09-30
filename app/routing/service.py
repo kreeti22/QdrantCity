@@ -37,7 +37,12 @@ def haversine_distance_m(lat1: float, lon1: float, lat2: float, lon2: float) -> 
 class OSMRoutingService:
     """Offline-first routing service using local OpenStreetMap road graphs with online OSRM fallback."""
 
-    def __init__(self, osm_path: Optional[Path] = None, osm_file_path: Optional[str] = None):
+    def __init__(
+        self,
+        osm_path: Optional[Path] = None,
+        osm_file_path: Optional[str] = None,
+        load_local: bool = True,
+    ):
         raw_path = osm_path or osm_file_path or "data/osm/delhi_roads.json"
         self.osm_path = Path(raw_path) if not isinstance(raw_path, Path) else raw_path
         self.graph: Optional[nx.DiGraph] = None
@@ -48,7 +53,10 @@ class OSMRoutingService:
         self.metadata: dict = {}
         self.init_duration_ms: float = 0.0
 
-        self._load_local_graph()
+        if load_local:
+            self._load_local_graph()
+        else:
+            logger.info("Local OSM graph disabled; routing will use OSRM/direct fallback.")
 
     @property
     def node_count(self) -> int:
@@ -341,9 +349,12 @@ class OSMRoutingService:
 _routing_service: Optional[OSMRoutingService] = None
 
 
-def get_routing_service(osm_path: Optional[Path] = None) -> OSMRoutingService:
+def get_routing_service(
+    osm_path: Optional[Path] = None,
+    load_local: bool = True,
+) -> OSMRoutingService:
     """Dependency provider / singleton accessor for OSMRoutingService."""
     global _routing_service
     if _routing_service is None:
-        _routing_service = OSMRoutingService(osm_path=osm_path)
+        _routing_service = OSMRoutingService(osm_path=osm_path, load_local=load_local)
     return _routing_service

@@ -27,17 +27,21 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # ---- Pre-download FastEmbed ONNX model during image build ----
 # This ensures 100% offline operation at runtime — no network calls needed.
-RUN python -c "from fastembed import TextEmbedding; TextEmbedding(model_name='BAAI/bge-small-en-v1.5')"
+RUN mkdir -p /opt/fastembed && \
+    python -c "from fastembed import TextEmbedding; TextEmbedding(model_name='BAAI/bge-small-en-v1.5', cache_dir='/opt/fastembed')"
 
 # ---- Application source ----
 COPY app/ ./app/
+COPY data/osm/ ./data/osm/
 COPY data/seed/ ./data/seed/
-COPY frontend/ ./frontend/
+# The frontend is plain browser-ready assets; package its production output with the backend.
+COPY frontend/ ./static/
 
 # ---- Default environment variables ----
 # These can be overridden at container runtime or via docker-compose.
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
+    OMP_NUM_THREADS=1 \
     QDRANT_EDGE_ENVIRONMENT="production" \
     QDRANT_EDGE_LOG_LEVEL="INFO" \
     QDRANT_EDGE_HOST="0.0.0.0" \
@@ -46,6 +50,7 @@ ENV PYTHONUNBUFFERED=1 \
     QDRANT_EDGE_USER_MEMORY_PATH="/app/data/memory/user_memory.db" \
     QDRANT_EDGE_SYNC_CHECKPOINT_PATH="/app/data/sync/sync_checkpoint.json" \
     QDRANT_EDGE_EMBEDDING_MODEL_NAME="BAAI/bge-small-en-v1.5" \
+    QDRANT_EDGE_EMBEDDING_CACHE_DIR="/opt/fastembed" \
     QDRANT_EDGE_VECTOR_SIZE="384" \
     QDRANT_EDGE_AUTO_SEED_ON_STARTUP="true"
 
@@ -58,9 +63,10 @@ VOLUME ["/app/data"]
 
 # ---- Health check ----
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-    CMD curl -f http://localhost:8000/live || exit 1
+    CMD curl -f http://localhost:${PORT:-8000}/live || exit 1
 
 EXPOSE 8000
 
-# Run with uvicorn — workers=1 because Qdrant Edge is in-process singleton
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1"]
+# Run with uvicorn — workers=1 because Qdrant Edge is an in-process singleton.
+# Render supplies PORT; the default keeps local Docker usage on port 8000.
+CMD ["sh", "-c", "exec uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000} --workers 1"]

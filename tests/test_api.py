@@ -27,11 +27,15 @@ def api_client(tmp_path: Path):
 def test_root_endpoint(api_client: TestClient):
     response = api_client.get("/")
     assert response.status_code == 200
-    data = response.json()
-    assert data["architecture"] == "Qdrant Edge + Local FastEmbed In-Process Substrate"
-    assert "Phase 2" in data["phase"]
-    assert data["embedding_model"] == "BAAI/bge-small-en-v1.5"
-    assert data["is_offline_only"] is True
+    assert "text/html" in response.headers["content-type"]
+    assert "DiscoveryPage.js" in response.text
+    assert api_client.get("/styles/main.css").status_code == 200
+    assert "DiscoveryPage.js" in api_client.get("/client/route").text
+    assert api_client.get("/docs").status_code == 200
+    assert api_client.get("/health").headers["content-type"].startswith("application/json")
+    diagnostics = api_client.get("/api/diagnostics")
+    assert diagnostics.status_code == 200
+    assert diagnostics.headers["content-type"].startswith("application/json")
 
 
 def test_health_check(api_client: TestClient):

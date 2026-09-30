@@ -2,6 +2,7 @@ import logging
 import time
 import uuid
 from contextlib import asynccontextmanager
+from pathlib import Path
 from typing import Optional
 
 from fastapi import FastAPI, Request
@@ -9,6 +10,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
+from starlette.staticfiles import StaticFiles
 
 from app.api.routes import router
 from app.config.settings import Settings, get_settings
@@ -30,6 +32,16 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] [%(name)s] %(message)s",
 )
 logger = logging.getLogger("qdrant_edge.main")
+
+
+class FrontendStaticFiles(StaticFiles):
+    async def get_response(self, path: str, scope):
+        try:
+            return await super().get_response(path, scope)
+        except StarletteHTTPException as exc:
+            if exc.status_code != 404 or path.startswith("api/") or Path(path).suffix:
+                raise
+            return await super().get_response("index.html", scope)
 
 
 def _configure_logging(settings: Settings) -> None:
@@ -127,7 +139,9 @@ def create_app(settings: Optional[Settings] = None) -> FastAPI:
 
         # 7. Local OpenStreetMap Routing Engine
         from app.routing.service import get_routing_service
-        routing_service = get_routing_service()
+        routing_service = get_routing_service(
+            load_local=app_settings.routing_local_enabled,
+        )
         app.state.routing_service = routing_service
 
         # 7. Seed initial dataset if collection is empty
@@ -293,48 +307,13 @@ def create_app(settings: Optional[Settings] = None) -> FastAPI:
 
     app.include_router(router)
 
-    # Mount Frontend SPA
-    from pathlib import Path
-    frontend_dir = Path("frontend")
+    # Serve the production assets at the backend origin, retaining /ui for compatibility.
+    frontend_dir = Path(__file__).resolve().parent.parent / "static"
+    if not frontend_dir.exists():
+        frontend_dir = Path(__file__).resolve().parent.parent / "frontend"
     if frontend_dir.exists():
-        from starlette.staticfiles import StaticFiles
         app.mount("/ui", StaticFiles(directory=str(frontend_dir), html=True), name="ui")
-
-    @app.get("/", tags=["Overview"])
-    def root():
-        return {
-            "name": app_settings.app_name,
-            "version": app_settings.app_version,
-            "architecture": "Qdrant Edge + Local FastEmbed In-Process Substrate",
-            "phase": "Phase 2D + Phase 3 — Production Hardening",
-            "environment": app_settings.environment,
-            "embedding_model": app_settings.embedding_model_name,
-            "embedding_dimension": app_settings.vector_size,
-            "has_sparse_bm25": True,
-            "has_query_understanding": True,
-            "has_user_memory": True,
-            "has_catalog_sync": True,
-            "has_metrics": True,
-            "is_offline_only": True,
-            "endpoints": {
-                "ui": "/ui",
-                "health": "/health",
-                "live": "/live",
-                "ready": "/ready",
-                "metrics": "/metrics",
-                "diagnostics": "/api/diagnostics",
-                "edge_status": "/edge/status",
-                "search": "/search",
-                "get_experience": "/api/experiences/{id}",
-                "seed": "/api/experiences/seed",
-                "bookmarks": "/api/users/{user_id}/bookmarks",
-                "preferences": "/api/users/{user_id}/preferences",
-                "sync_status": "/api/sync/status",
-                "sync_run": "/api/sync/run",
-                "sync_manifest": "/api/sync/manifest",
-                "documentation": "/docs",
-            },
-        }
+        app.mount("/", FrontendStaticFiles(directory=str(frontend_dir), html=True), name="frontend")
 
     return app
 

@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: qdrantcity
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /live
+    autoDeploy: true
+    envVars:
+      - key: QDRANT_EDGE_ENVIRONMENT
+        value: production
+      - key: QDRANT_EDGE_LOG_LEVEL
+        value: INFO
+      - key: QDRANT_EDGE_AUTO_SEED_ON_STARTUP
+        value: "true"
+      - key: QDRANT_EDGE_EDGE_STORAGE_PATH
+        value: /app/data/edge
+      - key: QDRANT_EDGE_USER_MEMORY_PATH
+        value: /app/data/memory/user_memory.db
+      - key: QDRANT_EDGE_SYNC_CHECKPOINT_PATH
+        value: /app/data/sync/sync_checkpoint.json
+      - key: QDRANT_EDGE_EMBEDDING_CACHE_DIR
+        value: /opt/fastembed
+      - key: QDRANT_EDGE_ROUTING_LOCAL_ENABLED
+        value: "false"
+      - key: QDRANT_EDGE_EMBEDDING_BATCH_SIZE
+        value: "8"
+      - key: QDRANT_EDGE_CORS_ORIGINS
+        value: "*"

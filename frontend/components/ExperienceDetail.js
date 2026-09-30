@@ -5,7 +5,7 @@
  * Fully styled in clean white & red BookMyShow aesthetic without emojis.
  */
 
-import { apiClient } from "../api/client.js";
+import { apiClient } from "../services/client.js";
 import { ExperienceCard } from "./ExperienceCard.js";
 import {
   escapeHtml,

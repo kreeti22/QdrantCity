@@ -13,8 +13,8 @@ pip install -r requirements.txt
 # 2. Start the server (auto-seeds 115 experiences on first run)
 uvicorn app.main:app --host 0.0.0.0 --port 8000
 
-# 3. Open the discovery UI
-#    http://localhost:8000/ui
+# 3. Open the discovery UI (served by FastAPI)
+#    http://localhost:8000/
 
 # 4. Or use Docker
 #    docker-compose up --build
@@ -23,7 +23,8 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000
 **Key endpoints:**
 | URL | Purpose |
 |---|---|
-| `http://localhost:8000/ui` | Discovery & Routing UI |
+| `http://localhost:8000/` | Discovery & Routing UI |
+| `http://localhost:8000/ui` | Compatibility URL for the UI |
 | `http://localhost:8000/docs` | Interactive API docs |
 | `http://localhost:8000/route` | Local OSM shortest path routing |
 | `http://localhost:8000/api/routing/status` | Road graph diagnostics |
@@ -39,6 +40,14 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000
 - 💾 **Privacy-first user memory** — bookmarks + preferences stored in local SQLite only
 - 🔄 **Optional catalog sync** — pull catalog updates from a central server when online
 - 158+ automated tests passing
+
+## Deploy to Render
+
+This repository includes a [`render.yaml`](render.yaml) Blueprint for a Docker web service. In Render, choose **New > Blueprint**, connect the repository, and deploy the `qdrantcity` service. The Blueprint provisions a persistent `/app/data` disk for the Qdrant Edge shard, SQLite memory, and sync checkpoint.
+
+The container binds to Render's injected `PORT` and exposes `/live` as its health check. The first build downloads the local FastEmbed model into the image, so the initial deploy can take several minutes. The free Render configuration disables the memory-heavy local road graph and uses OSRM/direct fallback routing. Because free services do not provide persistent disks, the local Edge catalog and SQLite memory can reset after a restart; the catalog is automatically reseeded on startup.
+
+For a custom frontend origin, replace `QDRANT_EDGE_CORS_ORIGINS` in `render.yaml` with the deployed origin or configure that environment variable in the Render dashboard.
 
 ---
 

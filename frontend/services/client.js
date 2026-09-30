@@ -24,9 +24,6 @@ class ApiClient {
     this.baseUrl = baseUrl.replace(/\/+$/, "");
   }
 
-  /**
-   * Helper to execute fetch with timeout and structured error extraction.
-   */
   async _request(endpoint, options = {}) {
     const url = `${this.baseUrl}${endpoint}`;
     const controller = new AbortController();
@@ -88,16 +85,6 @@ class ApiClient {
     }
   }
 
-  /**
-   * Natural language discovery search.
-   *
-   * @param {Object} params
-   * @param {string} params.query - Natural-language query string
-   * @param {number} [params.limit=10] - Number of results to return
-   * @param {string} [params.mode='hybrid'] - Search mode: 'hybrid', 'dense', or 'bm25'
-   * @param {boolean} [params.enable_intent=true] - Whether to apply deterministic query intent
-   * @param {Object|null} [params.filters=null] - Optional structured filter overrides
-   */
   async searchExperiences({
     query,
     limit = CONFIG.DEFAULT_SEARCH_LIMIT,
@@ -130,120 +117,62 @@ class ApiClient {
     });
   }
 
-  /**
-   * Retrieves single experience card details by ID.
-   *
-   * @param {number|string} id - The experience identifier
-   */
   async getExperienceById(id) {
     if (id === undefined || id === null) {
       throw new ApiError("Experience ID is required.", "INVALID_ID", null, 400);
     }
-    return this._request(`/api/experiences/${encodeURIComponent(id)}`, {
-      method: "GET",
-    });
+    return this._request(`/api/experiences/${encodeURIComponent(id)}`, { method: "GET" });
   }
 
-  /**
-   * Saves experience to user bookmarks.
-   */
   async addBookmark(userId = "local-default", experienceId) {
-    return this._request(`/api/users/${encodeURIComponent(userId)}/bookmarks/${encodeURIComponent(experienceId)}`, {
-      method: "POST",
-    });
+    return this._request(`/api/users/${encodeURIComponent(userId)}/bookmarks/${encodeURIComponent(experienceId)}`, { method: "POST" });
   }
 
-  /**
-   * Removes experience from user bookmarks.
-   */
   async removeBookmark(userId = "local-default", experienceId) {
-    return this._request(`/api/users/${encodeURIComponent(userId)}/bookmarks/${encodeURIComponent(experienceId)}`, {
-      method: "DELETE",
-    });
+    return this._request(`/api/users/${encodeURIComponent(userId)}/bookmarks/${encodeURIComponent(experienceId)}`, { method: "DELETE" });
   }
 
-  /**
-   * Lists all bookmarked experiences for user.
-   */
   async listBookmarks(userId = "local-default") {
-    return this._request(`/api/users/${encodeURIComponent(userId)}/bookmarks`, {
-      method: "GET",
-    });
+    return this._request(`/api/users/${encodeURIComponent(userId)}/bookmarks`, { method: "GET" });
   }
 
-  /**
-   * Retrieves current inferred user preference profile.
-   */
   async getUserPreferences(userId = "local-default") {
-    return this._request(`/api/users/${encodeURIComponent(userId)}/preferences`, {
-      method: "GET",
-    });
+    return this._request(`/api/users/${encodeURIComponent(userId)}/preferences`, { method: "GET" });
   }
 
-  /**
-   * Resets local user memory, bookmarks, and preferences.
-   */
   async resetUserMemory(userId = "local-default") {
-    return this._request(`/api/users/${encodeURIComponent(userId)}/memory`, {
-      method: "DELETE",
-    });
+    return this._request(`/api/users/${encodeURIComponent(userId)}/memory`, { method: "DELETE" });
   }
 
-  /**
-   * Logs a lightweight user interaction (e.g. view or search).
-   */
   async recordInteraction(userId = "local-default", eventType, experienceId = null, query = null) {
     try {
       return await this._request(`/api/users/${encodeURIComponent(userId)}/interactions`, {
         method: "POST",
-        body: JSON.stringify({
-          event_type: eventType,
-          experience_id: experienceId,
-          query,
-        }),
+        body: JSON.stringify({ event_type: eventType, experience_id: experienceId, query }),
       });
     } catch (e) {
-      // Non-blocking telemetry
       console.debug("Non-blocking interaction log failed:", e);
       return null;
     }
   }
 
-  /**
-   * Probes backend readiness.
-   */
   async checkReady() {
-    return this._request("/ready", {
-      method: "GET",
-    });
+    return this._request("/ready", { method: "GET" });
   }
 
-  /**
-   * Retrieves synchronization status and checkpoint metrics.
-   */
   async getSyncStatus() {
     try {
-      return await this._request("/api/sync/status", {
-        method: "GET",
-      });
+      return await this._request("/api/sync/status", { method: "GET" });
     } catch (e) {
       console.debug("Failed to fetch sync status:", e);
       return null;
     }
   }
 
-  /**
-   * Triggers a manual synchronization cycle.
-   */
   async runSync(force = false) {
-    return this._request(`/api/sync/run?force=${Boolean(force)}`, {
-      method: "POST",
-    });
+    return this._request(`/api/sync/run?force=${Boolean(force)}`, { method: "POST" });
   }
 
-  /**
-   * Phase 3F: Gets system readiness info for demo status panel.
-   */
   async getReadyStatus() {
     try {
       return await this._request("/ready", { method: "GET" });
@@ -253,9 +182,6 @@ class ApiClient {
     }
   }
 
-  /**
-   * Phase 3D: Gets operational metrics (privacy-safe aggregate data).
-   */
   async getMetrics() {
     try {
       return await this._request("/metrics", { method: "GET" });
@@ -265,21 +191,13 @@ class ApiClient {
     }
   }
 
-  /**
-   * Offline Routing: Calculates route between start and destination coordinates.
-   * @param {Object} params - { start: { latitude, longitude }, destination: { latitude, longitude } }
-   * @returns {Promise<Object>} RouteResponse with source, distance_m, and geometry
-   */
   async getRoute({ start, destination }) {
-    return await this._request("/route", {
+    return this._request("/route", {
       method: "POST",
       body: JSON.stringify({ start, destination }),
     });
   }
 
-  /**
-   * Offline Routing: Gets OpenStreetMap routing engine diagnostics.
-   */
   async getRoutingStatus() {
     try {
       return await this._request("/api/routing/status", { method: "GET" });
@@ -292,4 +210,3 @@ class ApiClient {
 
 export const apiClient = new ApiClient();
 export default apiClient;
-

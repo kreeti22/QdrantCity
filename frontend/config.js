@@ -4,8 +4,7 @@
  * Configurable API Base URL:
  * - Checks window.__ENV__ (injected via deployment/environment)
  * - Checks localStorage override ('QDRANT_API_BASE_URL')
- * - If running on same origin as backend (e.g. /ui), uses relative path ""
- * - Falls back to default http://localhost:8000
+ * - Uses the current origin by default so frontend and API share one backend
  */
 
 const getApiBaseUrl = () => {
@@ -17,12 +16,9 @@ const getApiBaseUrl = () => {
     if (localOverride) {
       return localOverride;
     }
-    // If frontend is hosted directly on port 8000
-    if (window.location.port === "8000" || window.location.pathname.startsWith("/ui")) {
-      return "";
-    }
+    return "";
   }
-  return "http://localhost:8000";
+  return "https://qdrantcity-2btt.onrender.com";
 };
 
 export const CONFIG = {

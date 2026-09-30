@@ -11,7 +11,7 @@
  * Theme: Clean White & Red aesthetic, no emojis, all prices in Rupees (₹).
  */
 
-import { apiClient, ApiError } from "../api/client.js";
+import { apiClient, ApiError } from "../services/client.js";
 import { SearchBar } from "../components/SearchBar.js";
 import { QueryChips } from "../components/QueryChips.js";
 import { FilterBar } from "../components/FilterBar.js";

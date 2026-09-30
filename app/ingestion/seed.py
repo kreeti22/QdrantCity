@@ -56,7 +56,10 @@ def load_seed_experiences(
 
     # 2. Batch-embed semantic texts locally via FastEmbed
     logger.info(f"Generating local dense embeddings for {len(semantic_texts)} experiences with '{service.model_name}'...")
-    dense_vectors = service.embed_texts(semantic_texts, batch_size=32)
+    dense_vectors = service.embed_texts(
+        semantic_texts,
+        batch_size=app_settings.embedding_batch_size,
+    )
 
     # 3. Generate BM25 sparse vectors via native Qdrant Edge Bm25
     logger.info(f"Generating native BM25 sparse vectors for {len(lexical_texts)} experiences...")
