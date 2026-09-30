@@ -9,10 +9,11 @@ import { ExperienceCard } from "./ExperienceCard.js";
 import { escapeHtml } from "../utilities/formatting.js";
 
 export class ResultsGrid {
-  constructor({ container, onSelect, onBookmarkToggle }) {
+  constructor({ container, onSelect, onBookmarkToggle, onShowRoute }) {
     this.container = container;
     this.onSelect = onSelect;
     this.onBookmarkToggle = onBookmarkToggle;
+    this.onShowRoute = onShowRoute;
     this.results = [];
   }
 
@@ -73,6 +74,17 @@ export class ResultsGrid {
             e.stopPropagation();
             if (exp && this.onBookmarkToggle) {
               this.onBookmarkToggle(exp, bookmarkBtn);
+            }
+          });
+        }
+
+        // Route button click
+        const routeBtn = card.querySelector(".card-route-btn");
+        if (routeBtn) {
+          routeBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (exp && this.onShowRoute) {
+              this.onShowRoute(exp);
             }
           });
         }

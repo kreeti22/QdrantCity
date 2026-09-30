@@ -304,19 +304,48 @@ export class ExperienceCard {
               </svg>
               <span class="meta-text">${dateText}</span>
             </div>
+
+            ${
+              experience.latitude !== undefined && experience.latitude !== null && experience.longitude !== undefined && experience.longitude !== null
+                ? `<div class="meta-row coords-row" title="Venue Coordinates: ${Number(experience.latitude).toFixed(4)}, ${Number(experience.longitude).toFixed(4)}">
+                    <svg class="meta-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="2" y1="12" x2="22" y2="12"></line>
+                      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                    </svg>
+                    <span class="meta-text coords-text">${Number(experience.latitude).toFixed(4)}, ${Number(experience.longitude).toFixed(4)} · <span class="type-pill">${escapeHtml((experience.type || (experience.category === "movies" ? "movie" : "event")).toUpperCase())}</span></span>
+                   </div>`
+                : ""
+            }
           </div>
 
           <div class="card-footer">
-            <div class="card-price">${priceText}</div>
-            ${
-              subcats.length > 0
-                ? `<div class="card-tags">
-                    ${subcats.map((tag) => `<span class="tag-pill">${escapeHtml(tag)}</span>`).join("")}
-                   </div>`
-                : scoreText
-                ? `<span class="relevance-score" title="Match Score">Score ${scoreText}</span>`
-                : ""
-            }
+            <div class="card-footer-left">
+              <div class="card-price">${priceText}</div>
+              ${
+                subcats.length > 0
+                  ? `<div class="card-tags">
+                      ${subcats.slice(0, 2).map((tag) => `<span class="tag-pill">${escapeHtml(tag)}</span>`).join("")}
+                     </div>`
+                  : scoreText
+                  ? `<span class="relevance-score" title="Match Score">Score ${scoreText}</span>`
+                  : ""
+              }
+            </div>
+
+            <button
+              type="button"
+              class="card-route-btn"
+              data-action="route"
+              data-id="${id}"
+              title="Show local route to venue"
+              aria-label="Show local route to ${title}"
+            >
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
+              </svg>
+              <span>Route</span>
+            </button>
           </div>
         </div>
       </article>

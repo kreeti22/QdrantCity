@@ -52,6 +52,10 @@ class ExperiencePayload(BaseModel):
     image_credit: Optional[str] = Field(default=None, description="Image attribution or license")
     last_verified: Optional[str] = Field(default="2026-09", description="Verification timestamp")
     demo_data: Optional[bool] = Field(default=False, description="Whether record is demo/illustrative data")
+    latitude: Optional[float] = Field(default=28.6139, description="Geographic latitude coordinate")
+    longitude: Optional[float] = Field(default=77.2090, description="Geographic longitude coordinate")
+    type: Optional[str] = Field(default="event", description="Type of attraction: 'movie' or 'event'")
+    osm_id: Optional[str] = Field(default=None, description="OpenStreetMap reference ID")
 
 
 class Experience(BaseModel):
@@ -86,6 +90,10 @@ class ExperienceSearchResult(BaseModel):
     image_credit: Optional[str] = Field(default=None, description="Image attribution or license")
     last_verified: Optional[str] = Field(default=None, description="Last verification date")
     demo_data: Optional[bool] = Field(default=None, description="Whether record is demo data")
+    latitude: Optional[float] = Field(default=None, description="Geographic latitude coordinate")
+    longitude: Optional[float] = Field(default=None, description="Geographic longitude coordinate")
+    type: Optional[str] = Field(default=None, description="Attraction type: 'movie' or 'event'")
+    osm_id: Optional[str] = Field(default=None, description="OpenStreetMap reference ID")
     payload: Dict[str, Any] = Field(default_factory=dict, description="Raw point payload dictionary for backwards compatibility")
     dense_score: Optional[float] = Field(default=None, description="Score from dense semantic retrieval")
     dense_rank: Optional[int] = Field(default=None, description="1-based rank from dense retrieval")
@@ -105,10 +113,24 @@ class ExperienceSearchResult(BaseModel):
                 for field in [
                     "venue", "city", "state", "neighborhood", "start_time", "end_time",
                     "currency", "image_url", "language", "subcategories",
-                    "source_url", "image_credit", "last_verified", "demo_data"
+                    "source_url", "image_credit", "last_verified", "demo_data",
+                    "type", "osm_id"
                 ]:
                     if data.get(field) is None and field in p:
                         data[field] = p[field]
+                if data.get("type") is None:
+                    cat = (data.get("category") or p.get("category") or "").lower()
+                    data["type"] = "movie" if cat == "movies" else "event"
+                if data.get("latitude") is None and "latitude" in p and p["latitude"] is not None:
+                    try:
+                        data["latitude"] = float(p["latitude"])
+                    except (ValueError, TypeError):
+                        pass
+                if data.get("longitude") is None and "longitude" in p and p["longitude"] is not None:
+                    try:
+                        data["longitude"] = float(p["longitude"])
+                    except (ValueError, TypeError):
+                        pass
                 if data.get("price") is None and "price" in p and p["price"] is not None:
                     try:
                         data["price"] = float(p["price"])

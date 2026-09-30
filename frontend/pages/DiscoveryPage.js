@@ -19,6 +19,7 @@ import { ResultsGrid } from "../components/ResultsGrid.js";
 import { EmptyState } from "../components/EmptyState.js";
 import { ErrorState } from "../components/ErrorState.js";
 import { ExperienceDetail } from "../components/ExperienceDetail.js";
+import { RouteModal } from "../components/RouteModal.js";
 
 export class DiscoveryPage {
   constructor({ rootElement }) {
@@ -242,6 +243,7 @@ export class DiscoveryPage {
         <!-- Modal Mount -->
         <div id="detail-modal-mount"></div>
         <div id="sync-modal-mount"></div>
+        <div id="route-modal-mount"></div>
       </div>
     `;
 
@@ -343,10 +345,18 @@ export class DiscoveryPage {
       },
     });
 
+    const routeModalMount = this.root.querySelector("#route-modal-mount");
+
+    this.routeModal = new RouteModal({
+      container: routeModalMount,
+      onClose: () => {},
+    });
+
     this.resultsGrid = new ResultsGrid({
       container: resultsMount,
       onSelect: (exp) => this.openDetail(exp),
       onBookmarkToggle: (exp, btn) => this.handleBookmarkToggle(exp, btn),
+      onShowRoute: (exp) => this.openRoute(exp),
     });
 
     this.emptyState = new EmptyState({
@@ -369,10 +379,15 @@ export class DiscoveryPage {
 
     this.detailModal = new ExperienceDetail({
       container: modalMount,
-      onClose: () => {
-        // detail closed
-      },
+      onClose: () => {},
+      onShowRoute: (exp) => this.openRoute(exp),
     });
+  }
+
+  openRoute(experience) {
+    if (this.routeModal) {
+      this.routeModal.open(experience);
+    }
   }
 
   async refreshBookmarks() {

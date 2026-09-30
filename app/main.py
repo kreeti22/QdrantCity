@@ -125,6 +125,11 @@ def create_app(settings: Optional[Settings] = None) -> FastAPI:
         app.state.search_limiter = search_limiter
         app.state.sync_limiter = sync_limiter
 
+        # 7. Local OpenStreetMap Routing Engine
+        from app.routing.service import get_routing_service
+        routing_service = get_routing_service()
+        app.state.routing_service = routing_service
+
         # 7. Seed initial dataset if collection is empty
         if app_settings.auto_seed_on_startup:
             try:

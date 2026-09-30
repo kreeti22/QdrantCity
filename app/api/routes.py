@@ -24,6 +24,8 @@ from app.memory.models import (
 )
 from app.memory.service import UserMemoryService
 from app.ratelimit import RateLimiter
+from app.routing.models import RouteRequest, RouteResponse
+from app.routing.service import OSMRoutingService, get_routing_service
 from app.sync.models import (
     SyncChanges,
     SyncManifest,
@@ -33,6 +35,15 @@ from app.sync.models import (
 from app.sync.service import SyncService
 
 router = APIRouter()
+
+
+def get_routing_service_dep(request: Request) -> OSMRoutingService:
+    """Dependency provider for OSMRoutingService attached to app state."""
+    service: Optional[OSMRoutingService] = getattr(request.app.state, "routing_service", None)
+    if service is None:
+        service = get_routing_service()
+        request.app.state.routing_service = service
+    return service
 
 
 def get_repository(request: Request) -> ExperienceRepository:
@@ -857,9 +868,47 @@ def get_sync_experiences(
                 "rating": e.rating,
                 "start_time": e.start_time,
                 "end_time": e.end_time,
+                "latitude": e.latitude,
+                "longitude": e.longitude,
+                "type": e.type,
+                "osm_id": e.osm_id,
             }
             for e in experiences
         ]
     }
+
+
+# --------------------------------------------------------------------------
+# Local OSM & Offline Routing Endpoints
+# --------------------------------------------------------------------------
+
+@router.post(
+    "/route",
+    response_model=RouteResponse,
+    tags=["Routing"],
+)
+@router.post(
+    "/api/route",
+    response_model=RouteResponse,
+    tags=["Routing"],
+)
+def calculate_route(
+    route_req: RouteRequest,
+    routing_service: OSMRoutingService = Depends(get_routing_service_dep),
+) -> RouteResponse:
+    """Calculates route between origin and destination using local Delhi OSM road graph with online fallback."""
+    return routing_service.route(route_req.start, route_req.destination)
+
+
+@router.get(
+    "/api/routing/status",
+    tags=["Routing"],
+)
+def get_routing_status(
+    routing_service: OSMRoutingService = Depends(get_routing_service_dep),
+) -> Dict[str, Any]:
+    """Returns runtime diagnostics for local OpenStreetMap routing engine."""
+    return routing_service.get_diagnostics()
+
 
 

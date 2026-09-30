@@ -23,18 +23,22 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000
 **Key endpoints:**
 | URL | Purpose |
 |---|---|
-| `http://localhost:8000/ui` | Discovery UI |
+| `http://localhost:8000/ui` | Discovery & Routing UI |
 | `http://localhost:8000/docs` | Interactive API docs |
+| `http://localhost:8000/route` | Local OSM shortest path routing |
+| `http://localhost:8000/api/routing/status` | Road graph diagnostics |
 | `http://localhost:8000/live` | Liveness probe |
 | `http://localhost:8000/metrics` | Operational metrics |
 
 **What makes it different:**
-- 🔒 **100% offline** — all embeddings, search, and memory run locally on CPU
+- 🔒 **100% offline** — all embeddings, search, local OSM graph, and memory run locally on CPU
+- 🗺️ **Offline Road Network Routing** — Dijkstra shortest-path navigation using local OpenStreetMap road graph (62k+ nodes)
+- 📍 **Location-Aware Experiences** — movies and events geocoded with real coordinates and instant routing
 - 🧠 **Hybrid retrieval** — dense semantic (FastEmbed) + sparse BM25 fused via RRF
 - 🎯 **Local query understanding** — parses "comedy tonight under $50" deterministically, no LLM
 - 💾 **Privacy-first user memory** — bookmarks + preferences stored in local SQLite only
 - 🔄 **Optional catalog sync** — pull catalog updates from a central server when online
-- 150 automated tests passing
+- 158+ automated tests passing
 
 ---
 
@@ -578,3 +582,42 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000
 Model load (~1.2s) is a one-time startup cost. All retrieval is fully local with no network calls.
 
 ---
+
+## Offline Event & Movie Location Locator & Local OSM Routing
+
+QdrantCinema includes an **in-process offline routing engine** powered by NetworkX and local OpenStreetMap (OSM) Delhi road network data:
+
+```text
+  User Location (GPS / Preset)               Event / Movie Venue (Qdrant Edge)
+  (e.g., Connaught Place: 28.6315, 77.2167)   (e.g., PVR Director's Cut: 28.5429, 77.1557)
+               \                                       /
+                \                                     /
+                 ▼                                   ▼
+        Nearest OSM Road Node Snapping (<2ms, NumPy spatial index)
+                                 ↓
+            NetworkX Dijkstra Shortest-Path Graph Engine
+                 (data/osm/delhi_roads.json: 62k+ nodes)
+                                 ↓
+                  100% Offline Route Calculation
+                    (Latency: 5-25ms on CPU)
+                                 ↓
+           Interactive Vector Map UI (Local Leaflet 1.9.4)
+          Polyline Route + Origin & Destination Markers + Telemetry
+```
+
+### Routing Endpoints
+
+- **`POST /route`** (or **`POST /api/route`**):
+  - Request: `{"start": {"latitude": 28.6315, "longitude": 77.2167}, "destination": {"latitude": 28.5429, "longitude": 77.1557}}`
+  - Response: GeoJSON LineString coordinates, `distance_km`, `duration_minutes`, `source: "local_osm"`, `is_offline: true`, and attribution: `"Map data © OpenStreetMap contributors"`.
+- **`GET /api/routing/status`**:
+  - Reports graph diagnostics: `node_count` (62,817), `edge_count` (82,749), bounding box, load duration, and availability.
+
+### Demo Walkthrough for Location & Routing
+
+1. **Search with Location Chips**: Click chips like `"Movies near me"` or `"Events near Connaught Place"`.
+2. **View Geocoded Cards**: Each result card displays its real venue, city, and `(lat, lon)` coordinates.
+3. **Open Route**: Click the **`[Route]`** button on any card or detail drawer.
+4. **Interactive Offline Map**: The modal displays a Leaflet map with origin and destination pins connected by the computed road polyline.
+5. **Switch Origins**: Toggle between *Current Location (GPS)*, *Connaught Place (Central)*, and *India Gate (South)* to recalculate paths instantaneously.
+6. **Telemetry & Attribution**: Shows distance in km, drive time, source badge (`LOCAL OSM ROAD GRAPH`), and OSM copyright attribution.

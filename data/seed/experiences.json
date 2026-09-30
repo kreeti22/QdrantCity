@@ -26,7 +26,11 @@
     "image_credit": "PVR INOX / Public Domain",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "English"
+    "language": "English",
+    "type": "movie",
+    "latitude": 18.995,
+    "longitude": 72.825,
+    "osm_id": "osm_venue_1"
   },
   {
     "id": 2,
@@ -55,7 +59,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "Hindi"
+    "language": "Hindi",
+    "type": "movie",
+    "latitude": 18.9696,
+    "longitude": 72.8194,
+    "osm_id": "osm_venue_2"
   },
   {
     "id": 3,
@@ -84,7 +92,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 3.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "Hindi"
+    "language": "Hindi",
+    "type": "movie",
+    "latitude": 18.9248,
+    "longitude": 72.8319,
+    "osm_id": "osm_venue_3"
   },
   {
     "id": 4,
@@ -113,7 +125,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "Instrumental"
+    "language": "Instrumental",
+    "type": "event",
+    "latitude": 18.9261,
+    "longitude": 72.8206,
+    "osm_id": "osm_venue_4"
   },
   {
     "id": 5,
@@ -142,7 +158,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "Instrumental"
+    "language": "Instrumental",
+    "type": "event",
+    "latitude": 18.9261,
+    "longitude": 72.8206,
+    "osm_id": "osm_venue_5"
   },
   {
     "id": 6,
@@ -171,7 +191,11 @@
     "image_credit": "Wikimedia Commons / Public Domain",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "Hindi"
+    "language": "Hindi",
+    "type": "event",
+    "latitude": 19.0347,
+    "longitude": 72.8611,
+    "osm_id": "osm_venue_6"
   },
   {
     "id": 7,
@@ -200,7 +224,11 @@
     "image_credit": "Wikimedia Commons / CC BY 2.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "Bilingual"
+    "language": "Bilingual",
+    "type": "event",
+    "latitude": 19.0416,
+    "longitude": 72.8197,
+    "osm_id": "osm_venue_7"
   },
   {
     "id": 8,
@@ -229,7 +257,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "Hindi"
+    "language": "Hindi",
+    "type": "event",
+    "latitude": 19.0688,
+    "longitude": 72.8364,
+    "osm_id": "osm_venue_8"
   },
   {
     "id": 9,
@@ -258,7 +290,11 @@
     "image_credit": "Wikimedia Commons / CC BY 3.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 19.0596,
+    "longitude": 72.8295,
+    "osm_id": "osm_venue_9"
   },
   {
     "id": 10,
@@ -287,7 +323,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "Hindi"
+    "language": "Hindi",
+    "type": "event",
+    "latitude": 19.1063,
+    "longitude": 72.8258,
+    "osm_id": "osm_venue_10"
   },
   {
     "id": 11,
@@ -316,7 +356,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 3.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "Marathi"
+    "language": "Marathi",
+    "type": "event",
+    "latitude": 19.0222,
+    "longitude": 72.8427,
+    "osm_id": "osm_venue_11"
   },
   {
     "id": 12,
@@ -345,7 +389,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 18.9261,
+    "longitude": 72.8206,
+    "osm_id": "osm_venue_12"
   },
   {
     "id": 13,
@@ -374,7 +422,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 3.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 18.9388,
+    "longitude": 72.8258,
+    "osm_id": "osm_venue_13"
   },
   {
     "id": 14,
@@ -403,7 +455,11 @@
     "image_credit": "Wikimedia Commons / CC BY 2.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 18.943,
+    "longitude": 72.823,
+    "osm_id": "osm_venue_14"
   },
   {
     "id": 15,
@@ -432,7 +488,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 18.922,
+    "longitude": 72.8335,
+    "osm_id": "osm_venue_15"
   },
   {
     "id": 16,
@@ -461,7 +521,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 18.93,
+    "longitude": 72.8295,
+    "osm_id": "osm_venue_16"
   },
   {
     "id": 17,
@@ -490,7 +554,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 3.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 18.922,
+    "longitude": 72.8347,
+    "osm_id": "osm_venue_17"
   },
   {
     "id": 18,
@@ -519,7 +587,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 19.2057,
+    "longitude": 72.9064,
+    "osm_id": "osm_venue_18"
   },
   {
     "id": 19,
@@ -548,7 +620,11 @@
     "image_credit": "Wikimedia Commons / CC BY 2.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 18.9548,
+    "longitude": 72.8155,
+    "osm_id": "osm_venue_19"
   },
   {
     "id": 20,
@@ -577,7 +653,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "Multilingual"
+    "language": "Multilingual",
+    "type": "event",
+    "latitude": 18.9298,
+    "longitude": 72.8335,
+    "osm_id": "osm_venue_20"
   },
   {
     "id": 21,
@@ -606,7 +686,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 3.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "Instrumental"
+    "language": "Instrumental",
+    "type": "event",
+    "latitude": 18.9458,
+    "longitude": 72.7937,
+    "osm_id": "osm_venue_21"
   },
   {
     "id": 22,
@@ -635,7 +719,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 18.9261,
+    "longitude": 72.8206,
+    "osm_id": "osm_venue_22"
   },
   {
     "id": 23,
@@ -664,7 +752,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 18.9298,
+    "longitude": 72.8335,
+    "osm_id": "osm_venue_23"
   },
   {
     "id": 24,
@@ -693,7 +785,11 @@
     "image_credit": "Wikimedia Commons / CC BY 2.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 19.0596,
+    "longitude": 72.8295,
+    "osm_id": "osm_venue_24"
   },
   {
     "id": 25,
@@ -722,7 +818,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 3.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "Hindi"
+    "language": "Hindi",
+    "type": "event",
+    "latitude": 19.1363,
+    "longitude": 72.8277,
+    "osm_id": "osm_venue_25"
   },
   {
     "id": 26,
@@ -751,7 +851,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 18.9269,
+    "longitude": 72.8327,
+    "osm_id": "osm_venue_26"
   },
   {
     "id": 27,
@@ -780,7 +884,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 3.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 18.9789,
+    "longitude": 72.8347,
+    "osm_id": "osm_venue_27"
   },
   {
     "id": 28,
@@ -809,7 +917,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 18.9275,
+    "longitude": 72.8317,
+    "osm_id": "osm_venue_28"
   },
   {
     "id": 29,
@@ -838,7 +950,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "English"
+    "language": "English",
+    "type": "movie",
+    "latitude": 28.5429,
+    "longitude": 77.1557,
+    "osm_id": "osm_venue_29"
   },
   {
     "id": 30,
@@ -867,7 +983,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "Bengali"
+    "language": "Bengali",
+    "type": "movie",
+    "latitude": 28.5898,
+    "longitude": 77.2249,
+    "osm_id": "osm_venue_30"
   },
   {
     "id": 31,
@@ -895,7 +1015,11 @@
     "source_url": "https://insider.in",
     "image_credit": "Unsplash / Comedy",
     "last_verified": "2026-09",
-    "demo_data": true
+    "demo_data": true,
+    "type": "event",
+    "latitude": 19.0596,
+    "longitude": 72.8295,
+    "osm_id": "osm_venue_31"
   },
   {
     "id": 32,
@@ -924,7 +1048,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 3.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "Hindi"
+    "language": "Hindi",
+    "type": "event",
+    "latitude": 28.5916,
+    "longitude": 77.2415,
+    "osm_id": "osm_venue_32"
   },
   {
     "id": 33,
@@ -953,7 +1081,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 3.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "Instrumental"
+    "language": "Instrumental",
+    "type": "event",
+    "latitude": 28.6256,
+    "longitude": 77.2345,
+    "osm_id": "osm_venue_33"
   },
   {
     "id": 34,
@@ -982,7 +1114,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 28.562,
+    "longitude": 77.195,
+    "osm_id": "osm_venue_34"
   },
   {
     "id": 35,
@@ -1011,7 +1147,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "Hindi"
+    "language": "Hindi",
+    "type": "event",
+    "latitude": 28.5535,
+    "longitude": 77.1942,
+    "osm_id": "osm_venue_35"
   },
   {
     "id": 36,
@@ -1040,7 +1180,11 @@
     "image_credit": "Wikimedia Commons / CC BY 2.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "Bilingual"
+    "language": "Bilingual",
+    "type": "event",
+    "latitude": 28.6315,
+    "longitude": 77.2167,
+    "osm_id": "osm_venue_36"
   },
   {
     "id": 37,
@@ -1069,7 +1213,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "Hindi"
+    "language": "Hindi",
+    "type": "event",
+    "latitude": 28.6272,
+    "longitude": 77.2335,
+    "osm_id": "osm_venue_37"
   },
   {
     "id": 38,
@@ -1098,7 +1246,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 3.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "Hindi"
+    "language": "Hindi",
+    "type": "event",
+    "latitude": 28.6251,
+    "longitude": 77.2356,
+    "osm_id": "osm_venue_38"
   },
   {
     "id": 39,
@@ -1127,7 +1279,11 @@
     "image_credit": "Wikimedia Commons / CC BY 2.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "Bilingual"
+    "language": "Bilingual",
+    "type": "event",
+    "latitude": 28.5898,
+    "longitude": 77.2249,
+    "osm_id": "osm_venue_39"
   },
   {
     "id": 40,
@@ -1156,7 +1312,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 28.6377,
+    "longitude": 77.2432,
+    "osm_id": "osm_venue_40"
   },
   {
     "id": 41,
@@ -1185,7 +1345,11 @@
     "image_credit": "Wikimedia Commons / CC BY 2.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 28.683,
+    "longitude": 77.215,
+    "osm_id": "osm_venue_41"
   },
   {
     "id": 42,
@@ -1214,7 +1378,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 28.6507,
+    "longitude": 77.2334,
+    "osm_id": "osm_venue_42"
   },
   {
     "id": 43,
@@ -1243,7 +1411,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 28.5244,
+    "longitude": 77.1855,
+    "osm_id": "osm_venue_43"
   },
   {
     "id": 44,
@@ -1272,7 +1444,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 3.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 28.5933,
+    "longitude": 77.2507,
+    "osm_id": "osm_venue_44"
   },
   {
     "id": 45,
@@ -1301,7 +1477,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 28.5875,
+    "longitude": 77.2225,
+    "osm_id": "osm_venue_45"
   },
   {
     "id": 46,
@@ -1330,7 +1510,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "Multilingual"
+    "language": "Multilingual",
+    "type": "event",
+    "latitude": 28.6096,
+    "longitude": 77.2437,
+    "osm_id": "osm_venue_46"
   },
   {
     "id": 47,
@@ -1359,7 +1543,11 @@
     "image_credit": "Wikimedia Commons / CC BY 3.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "Hindi"
+    "language": "Hindi",
+    "type": "event",
+    "latitude": 28.5732,
+    "longitude": 77.2084,
+    "osm_id": "osm_venue_47"
   },
   {
     "id": 48,
@@ -1388,7 +1576,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "Hindi"
+    "language": "Hindi",
+    "type": "event",
+    "latitude": 28.5912,
+    "longitude": 77.1852,
+    "osm_id": "osm_venue_48"
   },
   {
     "id": 49,
@@ -1417,7 +1609,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 3.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 28.6145,
+    "longitude": 77.2422,
+    "osm_id": "osm_venue_49"
   },
   {
     "id": 50,
@@ -1446,7 +1642,11 @@
     "image_credit": "Wikimedia Commons / CC BY 2.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "Bilingual"
+    "language": "Bilingual",
+    "type": "event",
+    "latitude": 28.5495,
+    "longitude": 77.2012,
+    "osm_id": "osm_venue_50"
   },
   {
     "id": 51,
@@ -1475,7 +1675,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 28.6119,
+    "longitude": 77.2193,
+    "osm_id": "osm_venue_51"
   },
   {
     "id": 52,
@@ -1504,7 +1708,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 3.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 12.9897,
+    "longitude": 77.5886,
+    "osm_id": "osm_venue_52"
   },
   {
     "id": 53,
@@ -1533,7 +1741,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 28.6145,
+    "longitude": 77.2422,
+    "osm_id": "osm_venue_53"
   },
   {
     "id": 54,
@@ -1562,7 +1774,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 28.5284,
+    "longitude": 77.2185,
+    "osm_id": "osm_venue_54"
   },
   {
     "id": 55,
@@ -1591,7 +1807,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 3.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "Kannada"
+    "language": "Kannada",
+    "type": "movie",
+    "latitude": 12.9555,
+    "longitude": 77.587,
+    "osm_id": "osm_venue_55"
   },
   {
     "id": 56,
@@ -1620,7 +1840,11 @@
     "image_credit": "Wikimedia Commons / CC BY 2.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "English"
+    "language": "English",
+    "type": "movie",
+    "latitude": 12.9345,
+    "longitude": 77.6113,
+    "osm_id": "osm_venue_56"
   },
   {
     "id": 57,
@@ -1649,7 +1873,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "Bilingual"
+    "language": "Bilingual",
+    "type": "movie",
+    "latitude": 12.9234,
+    "longitude": 77.5543,
+    "osm_id": "osm_venue_57"
   },
   {
     "id": 58,
@@ -1678,7 +1906,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "Instrumental"
+    "language": "Instrumental",
+    "type": "event",
+    "latitude": 12.9654,
+    "longitude": 77.6385,
+    "osm_id": "osm_venue_58"
   },
   {
     "id": 59,
@@ -1707,7 +1939,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 3.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "Kannada"
+    "language": "Kannada",
+    "type": "event",
+    "latitude": 13.0039,
+    "longitude": 77.5746,
+    "osm_id": "osm_venue_59"
   },
   {
     "id": 60,
@@ -1736,7 +1972,11 @@
     "image_credit": "Wikimedia Commons / CC BY 2.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 12.9345,
+    "longitude": 77.619,
+    "osm_id": "osm_venue_60"
   },
   {
     "id": 61,
@@ -1765,7 +2005,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 12.9352,
+    "longitude": 77.619,
+    "osm_id": "osm_venue_61"
   },
   {
     "id": 62,
@@ -1794,7 +2038,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 3.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "Kannada"
+    "language": "Kannada",
+    "type": "event",
+    "latitude": 12.9698,
+    "longitude": 77.7499,
+    "osm_id": "osm_venue_62"
   },
   {
     "id": 63,
@@ -1823,7 +2071,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "Kannada"
+    "language": "Kannada",
+    "type": "event",
+    "latitude": 12.9114,
+    "longitude": 77.5866,
+    "osm_id": "osm_venue_63"
   },
   {
     "id": 64,
@@ -1852,7 +2104,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 12.9698,
+    "longitude": 77.7499,
+    "osm_id": "osm_venue_64"
   },
   {
     "id": 65,
@@ -1881,7 +2137,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 3.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 12.9698,
+    "longitude": 77.5926,
+    "osm_id": "osm_venue_65"
   },
   {
     "id": 66,
@@ -1910,7 +2170,11 @@
     "image_credit": "Wikimedia Commons / CC BY 2.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 12.8988,
+    "longitude": 77.6828,
+    "osm_id": "osm_venue_66"
   },
   {
     "id": 67,
@@ -1939,7 +2203,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 12.9763,
+    "longitude": 77.5929,
+    "osm_id": "osm_venue_67"
   },
   {
     "id": 68,
@@ -1968,7 +2236,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 3.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 12.9507,
+    "longitude": 77.5848,
+    "osm_id": "osm_venue_68"
   },
   {
     "id": 69,
@@ -1997,7 +2269,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "Bilingual"
+    "language": "Bilingual",
+    "type": "event",
+    "latitude": 13.003,
+    "longitude": 77.57,
+    "osm_id": "osm_venue_69"
   },
   {
     "id": 70,
@@ -2026,7 +2302,11 @@
     "image_credit": "Wikimedia Commons / CC BY 2.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 12.9793,
+    "longitude": 77.6406,
+    "osm_id": "osm_venue_70"
   },
   {
     "id": 71,
@@ -2055,7 +2335,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 12.9961,
+    "longitude": 77.5815,
+    "osm_id": "osm_venue_71"
   },
   {
     "id": 72,
@@ -2084,7 +2368,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 3.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "Kannada"
+    "language": "Kannada",
+    "type": "event",
+    "latitude": 12.9667,
+    "longitude": 77.5818,
+    "osm_id": "osm_venue_72"
   },
   {
     "id": 73,
@@ -2113,7 +2401,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 12.9716,
+    "longitude": 77.6412,
+    "osm_id": "osm_venue_73"
   },
   {
     "id": 74,
@@ -2144,7 +2436,11 @@
     "image_credit": "Wikimedia Commons / CC BY 2.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 12.9716,
+    "longitude": 77.6412,
+    "osm_id": "osm_venue_74"
   },
   {
     "id": 75,
@@ -2173,7 +2469,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 12.9345,
+    "longitude": 77.619,
+    "osm_id": "osm_venue_75"
   },
   {
     "id": 76,
@@ -2202,7 +2502,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 12.9738,
+    "longitude": 77.5975,
+    "osm_id": "osm_venue_76"
   },
   {
     "id": 77,
@@ -2231,7 +2535,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 3.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 12.9752,
+    "longitude": 77.5963,
+    "osm_id": "osm_venue_77"
   },
   {
     "id": 78,
@@ -2260,7 +2568,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 12.9897,
+    "longitude": 77.5886,
+    "osm_id": "osm_venue_78"
   },
   {
     "id": 79,
@@ -2289,7 +2601,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "English"
+    "language": "English",
+    "type": "movie",
+    "latitude": 18.5196,
+    "longitude": 73.9318,
+    "osm_id": "osm_venue_79"
   },
   {
     "id": 80,
@@ -2318,7 +2634,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 3.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "Silent / Marathi"
+    "language": "Silent / Marathi",
+    "type": "movie",
+    "latitude": 18.5167,
+    "longitude": 73.8322,
+    "osm_id": "osm_venue_80"
   },
   {
     "id": 81,
@@ -2347,7 +2667,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "Marathi"
+    "language": "Marathi",
+    "type": "movie",
+    "latitude": 18.5165,
+    "longitude": 73.8562,
+    "osm_id": "osm_venue_81"
   },
   {
     "id": 82,
@@ -2376,7 +2700,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 3.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "Hindustani"
+    "language": "Hindustani",
+    "type": "event",
+    "latitude": 18.5236,
+    "longitude": 73.8478,
+    "osm_id": "osm_venue_82"
   },
   {
     "id": 83,
@@ -2405,7 +2733,11 @@
     "image_credit": "Wikimedia Commons / CC BY 2.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 18.5362,
+    "longitude": 73.894,
+    "osm_id": "osm_venue_83"
   },
   {
     "id": 84,
@@ -2434,7 +2766,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "Bilingual"
+    "language": "Bilingual",
+    "type": "event",
+    "latitude": 18.5074,
+    "longitude": 73.8077,
+    "osm_id": "osm_venue_84"
   },
   {
     "id": 85,
@@ -2463,7 +2799,11 @@
     "image_credit": "Wikimedia Commons / CC BY 2.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 18.5492,
+    "longitude": 73.9056,
+    "osm_id": "osm_venue_85"
   },
   {
     "id": 86,
@@ -2492,7 +2832,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "Marathi"
+    "language": "Marathi",
+    "type": "event",
+    "latitude": 18.5236,
+    "longitude": 73.8478,
+    "osm_id": "osm_venue_86"
   },
   {
     "id": 87,
@@ -2521,7 +2865,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 3.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "Marathi"
+    "language": "Marathi",
+    "type": "event",
+    "latitude": 18.5036,
+    "longitude": 73.8115,
+    "osm_id": "osm_venue_87"
   },
   {
     "id": 88,
@@ -2550,7 +2898,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 18.5779,
+    "longitude": 73.7667,
+    "osm_id": "osm_venue_88"
   },
   {
     "id": 89,
@@ -2579,7 +2931,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "Marathi"
+    "language": "Marathi",
+    "type": "event",
+    "latitude": 18.3663,
+    "longitude": 73.7559,
+    "osm_id": "osm_venue_89"
   },
   {
     "id": 90,
@@ -2608,7 +2964,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 18.5196,
+    "longitude": 73.8553,
+    "osm_id": "osm_venue_90"
   },
   {
     "id": 91,
@@ -2637,7 +2997,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 3.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 18.5524,
+    "longitude": 73.9015,
+    "osm_id": "osm_venue_91"
   },
   {
     "id": 92,
@@ -2666,7 +3030,11 @@
     "image_credit": "Wikimedia Commons / CC BY 2.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "Bilingual"
+    "language": "Bilingual",
+    "type": "event",
+    "latitude": 18.5147,
+    "longitude": 73.853,
+    "osm_id": "osm_venue_92"
   },
   {
     "id": 93,
@@ -2695,7 +3063,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 18.5284,
+    "longitude": 73.8504,
+    "osm_id": "osm_venue_93"
   },
   {
     "id": 94,
@@ -2724,7 +3096,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "Marathi"
+    "language": "Marathi",
+    "type": "event",
+    "latitude": 18.5204,
+    "longitude": 73.858,
+    "osm_id": "osm_venue_94"
   },
   {
     "id": 95,
@@ -2753,7 +3129,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 3.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "Multilingual"
+    "language": "Multilingual",
+    "type": "event",
+    "latitude": 18.5036,
+    "longitude": 73.8115,
+    "osm_id": "osm_venue_95"
   },
   {
     "id": 96,
@@ -2782,7 +3162,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "Hindi"
+    "language": "Hindi",
+    "type": "event",
+    "latitude": 18.5167,
+    "longitude": 73.8415,
+    "osm_id": "osm_venue_96"
   },
   {
     "id": 97,
@@ -2811,7 +3195,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "Marathi"
+    "language": "Marathi",
+    "type": "event",
+    "latitude": 18.518,
+    "longitude": 73.8315,
+    "osm_id": "osm_venue_97"
   },
   {
     "id": 98,
@@ -2840,7 +3228,11 @@
     "image_credit": "Wikimedia Commons / CC BY 2.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 18.5362,
+    "longitude": 73.894,
+    "osm_id": "osm_venue_98"
   },
   {
     "id": 99,
@@ -2869,7 +3261,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 18.5108,
+    "longitude": 73.8542,
+    "osm_id": "osm_venue_99"
   },
   {
     "id": 100,
@@ -2898,7 +3294,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 3.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 18.528,
+    "longitude": 73.8785,
+    "osm_id": "osm_venue_100"
   },
   {
     "id": 101,
@@ -2926,7 +3326,11 @@
     "image_credit": "Wikimedia Commons / CC BY 3.0",
     "last_verified": "2026-09",
     "demo_data": false,
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 19.0596,
+    "longitude": 72.8295,
+    "osm_id": "osm_venue_101"
   },
   {
     "id": 102,
@@ -2955,7 +3359,11 @@
     "image_credit": "Wikimedia Commons / CC BY-SA 4.0",
     "last_verified": "2026-09",
     "demo_data": true,
-    "language": "English"
+    "language": "English",
+    "type": "movie",
+    "latitude": 18.995,
+    "longitude": 72.825,
+    "osm_id": "osm_venue_102"
   },
   {
     "id": 103,
@@ -2980,7 +3388,11 @@
     "start_time": "2026-10-17T22:30:00Z",
     "end_time": "2026-10-18T02:00:00Z",
     "image_url": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=600&q=80",
-    "language": "Hindi"
+    "language": "Hindi",
+    "type": "movie",
+    "latitude": 28.5429,
+    "longitude": 77.1557,
+    "osm_id": "osm_venue_103"
   },
   {
     "id": 104,
@@ -3005,7 +3417,11 @@
     "start_time": "2026-10-18T21:00:00Z",
     "end_time": "2026-10-19T01:00:00Z",
     "image_url": "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=600&q=80",
-    "language": "English"
+    "language": "English",
+    "type": "event",
+    "latitude": 18.5362,
+    "longitude": 73.894,
+    "osm_id": "osm_venue_104"
   },
   {
     "title": "Sahyadri Dawn Trek & Rappelling",
@@ -3030,7 +3446,11 @@
     "end_time": "2026-10-17T14:00:00Z",
     "image_url": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80",
     "language": "English",
-    "id": 105
+    "id": 105,
+    "type": "event",
+    "latitude": 19.5298,
+    "longitude": 73.7028,
+    "osm_id": "osm_venue_105"
   },
   {
     "title": "Pawna Lake Kayaking & Stargazing Camp",
@@ -3055,7 +3475,11 @@
     "end_time": "2026-10-18T10:00:00Z",
     "image_url": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=600&q=80",
     "language": "English",
-    "id": 106
+    "id": 106,
+    "type": "event",
+    "latitude": 18.6672,
+    "longitude": 73.4905,
+    "osm_id": "osm_venue_106"
   },
   {
     "title": "Kamshet Tandem Paragliding Flight",
@@ -3080,7 +3504,11 @@
     "end_time": "2026-10-18T10:30:00Z",
     "image_url": "https://images.unsplash.com/photo-1508873696983-2df5293cb32b?auto=format&fit=crop&w=600&q=80",
     "language": "English",
-    "id": 107
+    "id": 107,
+    "type": "event",
+    "latitude": 18.735,
+    "longitude": 73.535,
+    "osm_id": "osm_venue_107"
   },
   {
     "title": "Torq03 Pro Go-Karting Championship",
@@ -3105,7 +3533,11 @@
     "end_time": "2026-10-17T21:00:00Z",
     "image_url": "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=600&q=80",
     "language": "English",
-    "id": 108
+    "id": 108,
+    "type": "event",
+    "latitude": 12.9719,
+    "longitude": 77.7289,
+    "osm_id": "osm_venue_108"
   },
   {
     "title": "Equilibrium Rock Climbing Challenge",
@@ -3130,7 +3562,11 @@
     "end_time": "2026-10-16T13:00:00Z",
     "image_url": "https://images.unsplash.com/photo-1522163182402-834f871fd851?auto=format&fit=crop&w=600&q=80",
     "language": "English",
-    "id": 109
+    "id": 109,
+    "type": "event",
+    "latitude": 12.9716,
+    "longitude": 77.6412,
+    "osm_id": "osm_venue_109"
   },
   {
     "title": "Haunted Forest Night Trek",
@@ -3156,7 +3592,11 @@
     "end_time": "2026-10-18T05:00:00Z",
     "image_url": "https://images.unsplash.com/photo-1511447333015-45b65e60f6d5?auto=format&fit=crop&w=600&q=80",
     "language": "English",
-    "id": 110
+    "id": 110,
+    "type": "event",
+    "latitude": 18.825,
+    "longitude": 73.402,
+    "osm_id": "osm_venue_110"
   },
   {
     "title": "Bhangarh Horror Mystery Room Challenge",
@@ -3181,7 +3621,11 @@
     "end_time": "2026-10-16T19:30:00Z",
     "image_url": "https://images.unsplash.com/photo-1511447333015-45b65e60f6d5?auto=format&fit=crop&w=600&q=80",
     "language": "English",
-    "id": 111
+    "id": 111,
+    "type": "event",
+    "latitude": 28.5488,
+    "longitude": 77.2033,
+    "osm_id": "osm_venue_111"
   },
   {
     "title": "The Haunted Asylum: VR Survival Adventure",
@@ -3207,7 +3651,11 @@
     "end_time": "2026-10-18T17:30:00Z",
     "image_url": "https://images.unsplash.com/photo-1511447333015-45b65e60f6d5?auto=format&fit=crop&w=600&q=80",
     "language": "English",
-    "id": 112
+    "id": 112,
+    "type": "event",
+    "latitude": 12.9716,
+    "longitude": 77.6412,
+    "osm_id": "osm_venue_112"
   },
   {
     "title": "Midnight Kayaking & Haunted Island Trail",
@@ -3232,7 +3680,11 @@
     "end_time": "2026-10-20T00:30:00Z",
     "image_url": "https://images.unsplash.com/photo-1511447333015-45b65e60f6d5?auto=format&fit=crop&w=600&q=80",
     "language": "English",
-    "id": 113
+    "id": 113,
+    "type": "event",
+    "latitude": 18.435,
+    "longitude": 73.763,
+    "osm_id": "osm_venue_113"
   },
   {
     "title": "Midnight Ghost Walk & Haunted Ruins",
@@ -3258,7 +3710,11 @@
     "end_time": "2026-10-17T01:00:00Z",
     "image_url": "https://images.unsplash.com/photo-1511447333015-45b65e60f6d5?auto=format&fit=crop&w=600&q=80",
     "language": "English",
-    "id": 114
+    "id": 114,
+    "type": "event",
+    "latitude": 28.5255,
+    "longitude": 77.1722,
+    "osm_id": "osm_venue_114"
   },
   {
     "title": "The Dark Room: Ghost Stories & Horror Comedy",
@@ -3283,6 +3739,10 @@
     "end_time": "2026-10-17T22:30:00Z",
     "image_url": "https://images.unsplash.com/photo-1585699324551-f6c309eedeca?auto=format&fit=crop&w=600&q=80",
     "language": "Hindi",
-    "id": 115
+    "id": 115,
+    "type": "event",
+    "latitude": 28.5284,
+    "longitude": 77.2185,
+    "osm_id": "osm_venue_115"
   }
 ]

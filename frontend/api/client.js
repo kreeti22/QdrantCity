@@ -264,6 +264,30 @@ class ApiClient {
       return null;
     }
   }
+
+  /**
+   * Offline Routing: Calculates route between start and destination coordinates.
+   * @param {Object} params - { start: { latitude, longitude }, destination: { latitude, longitude } }
+   * @returns {Promise<Object>} RouteResponse with source, distance_m, and geometry
+   */
+  async getRoute({ start, destination }) {
+    return await this._request("/route", {
+      method: "POST",
+      body: JSON.stringify({ start, destination }),
+    });
+  }
+
+  /**
+   * Offline Routing: Gets OpenStreetMap routing engine diagnostics.
+   */
+  async getRoutingStatus() {
+    try {
+      return await this._request("/api/routing/status", { method: "GET" });
+    } catch (e) {
+      console.debug("Could not fetch routing status:", e);
+      return null;
+    }
+  }
 }
 
 export const apiClient = new ApiClient();

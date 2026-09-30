@@ -15,9 +15,10 @@ import {
 } from "../utilities/formatting.js";
 
 export class ExperienceDetail {
-  constructor({ container, onClose }) {
+  constructor({ container, onClose, onShowRoute }) {
     this.container = container;
     this.onClose = onClose;
+    this.onShowRoute = onShowRoute;
     this.isOpen = false;
     this._handleKeyDown = this._handleKeyDown.bind(this);
   }
@@ -178,6 +179,12 @@ export class ExperienceDetail {
                   <span class="pricing-value">${language}</span>
                 </div>
                 <div class="pricing-action">
+                  <button type="button" class="btn-detail-route" id="btn-detail-route" title="Calculate local route to this venue">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
+                    </svg>
+                    <span>Show Route</span>
+                  </button>
                   <button type="button" class="btn-book-now" id="btn-book-now" onclick="alert('Booking initiated for ${escapeHtml(title)}!')">
                     Book Experience
                   </button>
@@ -221,6 +228,25 @@ export class ExperienceDetail {
                       <span class="detail-subvalue">${locationFull}</span>
                     </div>
                   </div>
+
+                  ${
+                    exp.latitude !== undefined && exp.latitude !== null && exp.longitude !== undefined && exp.longitude !== null
+                      ? `<div class="detail-item">
+                          <div class="detail-icon-circle">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <circle cx="12" cy="12" r="10"></circle>
+                              <line x1="2" y1="12" x2="22" y2="12"></line>
+                              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                            </svg>
+                          </div>
+                          <div class="detail-info">
+                            <span class="detail-heading">Coordinates & Type</span>
+                            <span class="detail-value">${Number(exp.latitude).toFixed(4)}, ${Number(exp.longitude).toFixed(4)}</span>
+                            <span class="detail-subvalue">${(exp.type || (exp.category === "movies" ? "movie" : "event")).toUpperCase()} · Local OSM Mapped</span>
+                          </div>
+                        </div>`
+                      : ""
+                  }
                 </div>
               </div>
 
@@ -254,13 +280,23 @@ export class ExperienceDetail {
     const closeBtn = this.container.querySelector("#modal-close-btn");
     const backBtn = this.container.querySelector("#modal-back-btn");
     const backdrop = this.container.querySelector("#modal-backdrop");
+    const routeBtn = this.container.querySelector("#btn-detail-route");
 
-    closeBtn.addEventListener("click", () => this.close());
-    backBtn.addEventListener("click", () => this.close());
-    backdrop.addEventListener("click", (e) => {
-      if (e.target === backdrop) {
-        this.close();
-      }
-    });
+    if (closeBtn) closeBtn.addEventListener("click", () => this.close());
+    if (backBtn) backBtn.addEventListener("click", () => this.close());
+    if (routeBtn) {
+      routeBtn.addEventListener("click", () => {
+        if (this.onShowRoute) {
+          this.onShowRoute(exp);
+        }
+      });
+    }
+    if (backdrop) {
+      backdrop.addEventListener("click", (e) => {
+        if (e.target === backdrop) {
+          this.close();
+        }
+      });
+    }
   }
 }

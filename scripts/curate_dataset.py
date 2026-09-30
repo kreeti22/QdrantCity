@@ -546,5 +546,8 @@ def curate():
         json.dump(curated, f, indent=2, ensure_ascii=False)
     print(f"Saved {len(curated)} items to {p}")
 
+    from scripts.enrich_coordinates import enrich
+    enrich()
+
 if __name__ == "__main__":
     curate()
