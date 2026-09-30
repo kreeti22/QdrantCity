@@ -605,6 +605,14 @@ QdrantCinema includes an **in-process offline routing engine** powered by Networ
           Polyline Route + Origin & Destination Markers + Telemetry
 ```
 
+### Architecture Summary
+
+1. **Qdrant Edge Local Retrieval:** In-process vector database (`qdrant-edge-py`) running dual dense vectors (FastEmbed `BAAI/bge-small-en-v1.5`, 384-dim) and BM25 sparse lexical vectors with Reciprocal Rank Fusion (RRF). Zero cloud calls.
+2. **Local OSM Data:** Pre-packaged Delhi road network in `data/osm/delhi_roads.json` containing 62,817 intersections and 82,749 road segments.
+3. **Local Route Calculation:** Fast nearest-node spatial snapping via vectorized NumPy Euclidean distances followed by NetworkX Dijkstra shortest-path routing over the road network graph.
+4. **Online Fallback:** If coordinates fall outside the local OSM bounding box, requests seamlessly fall back to public OSRM (`router.project-osrm.org`). If the network is disconnected, it cleanly degrades to an offline direct geodesic trajectory.
+5. **Attribution:** OpenStreetMap compliance via `"Map data © OpenStreetMap contributors"` attribution banner on all route responses and map displays.
+
 ### Routing Endpoints
 
 - **`POST /route`** (or **`POST /api/route`**):
@@ -613,11 +621,25 @@ QdrantCinema includes an **in-process offline routing engine** powered by Networ
 - **`GET /api/routing/status`**:
   - Reports graph diagnostics: `node_count` (62,817), `edge_count` (82,749), bounding box, load duration, and availability.
 
-### Demo Walkthrough for Location & Routing
+### Offline Acceptance Demo Steps
 
-1. **Search with Location Chips**: Click chips like `"Movies near me"` or `"Events near Connaught Place"`.
-2. **View Geocoded Cards**: Each result card displays its real venue, city, and `(lat, lon)` coordinates.
-3. **Open Route**: Click the **`[Route]`** button on any card or detail drawer.
-4. **Interactive Offline Map**: The modal displays a Leaflet map with origin and destination pins connected by the computed road polyline.
-5. **Switch Origins**: Toggle between *Current Location (GPS)*, *Connaught Place (Central)*, and *India Gate (South)* to recalculate paths instantaneously.
-6. **Telemetry & Attribution**: Shows distance in km, drive time, source badge (`LOCAL OSM ROAD GRAPH`), and OSM copyright attribution.
+To verify 100% offline operation:
+
+1. **Start QdrantCinema:**
+   ```bash
+   uvicorn app.main:app --host 0.0.0.0 --port 8000
+   ```
+2. **Open the Web UI:**
+   Navigate to `http://localhost:8000/ui` in your browser.
+3. **Search Online / Connected:**
+   - Search for `PVR movie Delhi` or click one of the query chips.
+   - Select an experience card or open the details view.
+   - Click **`[Route]`** to compute a route.
+   - Confirm the badge displays **`LOCAL OSM ROUTE`** (with `100% OFFLINE` indicator and OSM attribution).
+4. **Disconnect Internet:**
+   - Disconnect Wi-Fi / Ethernet or disable network adapter.
+5. **Search & Route Offline:**
+   - Search for `Standup comedy` or `Dune Part Two`.
+   - Results are retrieved instantaneously from local Qdrant Edge.
+   - Click **`[Route]`** on any result.
+   - Confirm the route is still calculated locally via local OSM NetworkX Dijkstra graph with polyline geometry rendered completely offline.
