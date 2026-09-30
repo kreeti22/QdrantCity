@@ -44,7 +44,7 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000
 
 This repository includes a [`render.yaml`](render.yaml) Blueprint for a Docker web service. In Render, choose **New > Blueprint**, connect the repository, and deploy the `qdrantcity` service. The Blueprint provisions a persistent `/app/data` disk for the Qdrant Edge shard, SQLite memory, and sync checkpoint.
 
-The container binds to Render's injected `PORT` and exposes `/live` as its health check. The first build downloads the local FastEmbed model, so the initial deploy can take several minutes. The included 1 GB persistent disk requires Render's Starter plan or higher.
+The container binds to Render's injected `PORT` and exposes `/live` as its health check. The first build downloads the local FastEmbed model, so the initial deploy can take several minutes. The Blueprint uses Render's Standard plan because the FastEmbed ONNX model, Qdrant Edge, and Delhi road graph exceed the 512 MiB Starter memory limit. The included 1 GB persistent disk requires a paid plan.
 
 For a custom frontend origin, replace `QDRANT_EDGE_CORS_ORIGINS` in `render.yaml` with the deployed origin or configure that environment variable in the Render dashboard.
 

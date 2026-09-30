@@ -39,6 +39,7 @@ COPY frontend/ ./frontend/
 # These can be overridden at container runtime or via docker-compose.
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
+    OMP_NUM_THREADS=1 \
     QDRANT_EDGE_ENVIRONMENT="production" \
     QDRANT_EDGE_LOG_LEVEL="INFO" \
     QDRANT_EDGE_HOST="0.0.0.0" \

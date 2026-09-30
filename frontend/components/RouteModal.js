@@ -21,6 +21,14 @@ export const START_PRESETS = [
   { name: "Civil Lines (North Delhi)", lat: 28.6830, lon: 77.2150 },
 ];
 
+const DELHI_MAP_BOUNDS = [[28.25, 76.85], [28.95, 77.55]];
+const DELHI_MAP_CENTER = [28.6139, 77.2090];
+
+function isInDelhi(lat, lon) {
+  return lat >= DELHI_MAP_BOUNDS[0][0] && lat <= DELHI_MAP_BOUNDS[1][0]
+    && lon >= DELHI_MAP_BOUNDS[0][1] && lon <= DELHI_MAP_BOUNDS[1][1];
+}
+
 export class RouteModal {
   constructor({ container, onClose }) {
     this.container = container;
@@ -38,14 +46,19 @@ export class RouteModal {
     if (typeof navigator !== "undefined" && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
-          this.gpsLocation = {
-            name: "My Current Location (GPS)",
-            lat: pos.coords.latitude,
-            lon: pos.coords.longitude,
-            isGps: true,
-          };
-          this.startLocation = this.gpsLocation;
-          console.log("Acquired device geolocation:", this.gpsLocation);
+          const { latitude, longitude } = pos.coords;
+          if (isInDelhi(latitude, longitude)) {
+            this.gpsLocation = {
+              name: "My Current Location (GPS)",
+              lat: latitude,
+              lon: longitude,
+              isGps: true,
+            };
+            this.startLocation = this.gpsLocation;
+            console.log("Acquired Delhi device geolocation:", this.gpsLocation);
+          } else {
+            console.warn("Device location is outside the Delhi map area; using Delhi fallback.");
+          }
         },
         (err) => {
           console.warn("Geolocation unavailable or denied, using Delhi Connaught Place fallback:", err.message);
@@ -208,6 +221,13 @@ export class RouteModal {
     const startLat = this.startLocation.lat;
     const startLon = this.startLocation.lon;
 
+    if (!isInDelhi(destLat, destLon)) {
+      banner.className = "route-telemetry-banner error";
+      banner.innerHTML = "<span>Routing is currently available only for destinations in Delhi.</span>";
+      this._renderDelhiMap(mapCanvas);
+      return;
+    }
+
     try {
       const res = await apiClient.getRoute({
         start: { latitude: startLat, longitude: startLon },
@@ -277,8 +297,13 @@ export class RouteModal {
         const map = L.map(mapCanvas, {
           zoomControl: true,
           attributionControl: false,
+          maxBounds: DELHI_MAP_BOUNDS,
+          maxBoundsViscosity: 1.0,
+          minZoom: 9,
+          maxZoom: 18,
         });
         this.mapInstance = map;
+        map.setView(DELHI_MAP_CENTER, 11);
 
         // Add OSM tiles (will load if online, neutral background if offline)
         L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -332,6 +357,33 @@ export class RouteModal {
 
     // Fallback vector SVG renderer if Leaflet cannot mount
     this._renderVectorFallback(mapCanvas, startLat, startLon, destLat, destLon, latLngs);
+  }
+
+  _renderDelhiMap(mapCanvas) {
+    if (!mapCanvas || typeof L === "undefined") return;
+
+    if (this.mapInstance) {
+      try {
+        this.mapInstance.remove();
+      } catch (e) {
+        // ignore
+      }
+    }
+
+    const map = L.map(mapCanvas, {
+      zoomControl: true,
+      attributionControl: false,
+      maxBounds: DELHI_MAP_BOUNDS,
+      maxBoundsViscosity: 1.0,
+      minZoom: 9,
+      maxZoom: 18,
+    }).setView(DELHI_MAP_CENTER, 11);
+    this.mapInstance = map;
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 18,
+      errorTileUrl: "",
+    }).addTo(map);
+    setTimeout(() => map.invalidateSize(), 150);
   }
 
   _renderVectorFallback(container, startLat, startLon, destLat, destLon, latLngs) {

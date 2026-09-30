@@ -2,7 +2,7 @@ services:
   - type: web
     name: qdrantcity
     runtime: docker
-    plan: starter
+    plan: standard
     dockerfilePath: ./Dockerfile
     dockerContext: .
     healthCheckPath: /live
