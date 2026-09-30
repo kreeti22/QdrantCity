@@ -2,7 +2,7 @@
  * QueryChips Component
  *
  * Clickable quick-query chips below the search bar that populate and execute searches.
- * India-specific searches with clean BookMyShow tag aesthetic.
+ * India-specific searches presented as understated editorial suggestions.
  */
 
 export class QueryChips {
@@ -10,12 +10,12 @@ export class QueryChips {
     container,
     onSelect,
     chips = [
-      { label: "⚡ Adventurous & Thrilling", query: "adventurous and thrilling" },
-      { label: "🌴 Goa Parties & Casinos", query: "Goa night parties casinos" },
-      { label: "🍿 Delhi Movies", query: "movies in Delhi" },
-      { label: "🧩 Mystery Rooms Delhi", query: "mystery rooms Delhi" },
-      { label: "🎶 Nizamuddin Sufi Qawwali", query: "Nizamuddin Sufi Qawwali" },
-      { label: "🎭 Late Night Comedy", query: "comedy in Delhi" },
+      { label: "Adventurous & Thrilling", query: "adventurous and thrilling" },
+      { label: "Goa Parties & Casinos", query: "Goa night parties casinos" },
+      { label: "Delhi Movies", query: "movies in Delhi" },
+      { label: "Mystery Rooms Delhi", query: "mystery rooms Delhi" },
+      { label: "Nizamuddin Sufi Qawwali", query: "Nizamuddin Sufi Qawwali" },
+      { label: "Late Night Comedy", query: "comedy in Delhi" },
     ],
   }) {
     this.container = container;

@@ -46,7 +46,7 @@ def test_1_frontend_static_files_structure():
     assert (base / "index.html").exists()
     assert (base / "config.js").exists()
     assert (base / ".env.example").exists()
-    assert (base / "api" / "client.js").exists()
+    assert (base / "services" / "client.js").exists()
     assert (base / "styles" / "main.css").exists()
     assert (base / "utilities" / "formatting.js").exists()
     assert (base / "pages" / "DiscoveryPage.js").exists()
@@ -60,12 +60,15 @@ def test_1_frontend_static_files_structure():
         "EmptyState.js",
         "ErrorState.js",
         "ExperienceDetail.js",
+        "ProfileModal.js",
     ]
     for comp in components:
         comp_path = base / "components" / comp
         assert comp_path.exists(), f"Component {comp} must exist at {comp_path}"
         content = comp_path.read_text(encoding="utf-8")
         assert len(content) > 50, f"Component {comp} should not be empty"
+        if comp == "ProfileModal.js":
+            assert 'from "../services/client.js"' in content
 
 
 def test_2_ui_static_route_serving(api_client: TestClient):
@@ -77,6 +80,7 @@ def test_2_ui_static_route_serving(api_client: TestClient):
     assert response.status_code == 200
     assert "QdrantCinema" in response.text
     assert "DiscoveryPage.js" in response.text
+    assert not re.search(r"^(<<<<<<<|=======|>>>>>>>)", response.text, re.MULTILINE)
 
     # Test static CSS asset
     css_res = api_client.get("/ui/styles/main.css")
@@ -84,7 +88,7 @@ def test_2_ui_static_route_serving(api_client: TestClient):
     assert "--bg-primary" in css_res.text
 
     # Test static JS asset
-    js_res = api_client.get("/ui/api/client.js")
+    js_res = api_client.get("/ui/services/client.js")
     assert js_res.status_code == 200
     assert "searchExperiences" in js_res.text
 

@@ -136,10 +136,10 @@ export class RouteModal {
                   <span class="point-label">START / ORIGIN</span>
                   <div class="point-selector-wrapper">
                     <select id="route-start-select" class="route-start-dropdown">
-                      ${this.gpsLocation ? `<option value="gps" selected>📍 My Current Location (${this.gpsLocation.lat.toFixed(4)}, ${this.gpsLocation.lon.toFixed(4)})</option>` : ""}
+                      ${this.gpsLocation ? `<option value="gps" selected>My Current Location (${this.gpsLocation.lat.toFixed(4)}, ${this.gpsLocation.lon.toFixed(4)})</option>` : ""}
                       ${START_PRESETS.map((p, idx) => `
                         <option value="${idx}" ${(!this.gpsLocation && p.isDefault) ? "selected" : ""}>
-                          📍 ${p.name}
+                          ${p.name}
                         </option>
                       `).join("")}
                     </select>
@@ -337,7 +337,7 @@ export class RouteModal {
 
         // Draw Route Polyline
         const polyline = L.polyline(latLngs, {
-          color: "#e11d48",
+          color: "#694535",
           weight: 5,
           opacity: 0.9,
           lineJoin: "round",
@@ -419,32 +419,25 @@ export class RouteModal {
       <div class="vector-route-svg-wrapper">
         <svg viewBox="0 0 ${width} ${height}" class="vector-route-svg" preserveAspectRatio="xMidYMid meet">
           <defs>
-            <linearGradient id="routeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#059669" />
-              <stop offset="100%" stop-color="#e11d48" />
-            </linearGradient>
-            <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-              <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#e11d48" flood-opacity="0.3" />
-            </filter>
           </defs>
 
           <!-- Background Grid for road orientation -->
           <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(226,232,240,0.6)" stroke-width="1"/>
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(117,107,96,0.18)" stroke-width="1"/>
           </pattern>
-          <rect width="100%" height="100%" fill="#f8fafc" />
+          <rect width="100%" height="100%" fill="#e9e0d4" />
           <rect width="100%" height="100%" fill="url(#grid)" />
 
           <!-- Route Polyline -->
-          <polyline points="${pointsStr}" fill="none" stroke="url(#routeGradient)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)" />
+          <polyline points="${pointsStr}" fill="none" stroke="#694535" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
 
           <!-- Start Marker -->
-          <circle cx="${startX}" cy="${startY}" r="9" fill="#059669" stroke="#ffffff" stroke-width="2.5" />
-          <text x="${startX}" y="${parseFloat(startY) - 14}" fill="#065f46" font-size="12" font-weight="700" text-anchor="middle">Start: ${escapeHtml(this.startLocation.name.split(" ")[0])}</text>
+          <circle cx="${startX}" cy="${startY}" r="9" fill="#72745a" stroke="#faf7f1" stroke-width="2.5" />
+          <text x="${startX}" y="${parseFloat(startY) - 14}" fill="#596149" font-size="12" font-weight="700" text-anchor="middle">Start: ${escapeHtml(this.startLocation.name.split(" ")[0])}</text>
 
           <!-- Destination Marker -->
-          <circle cx="${destX}" cy="${destY}" r="10" fill="#e11d48" stroke="#ffffff" stroke-width="3" />
-          <text x="${destX}" y="${parseFloat(destY) - 15}" fill="#9f1239" font-size="13" font-weight="800" text-anchor="middle">${escapeHtml(this.activeExperience.venue || "Venue")}</text>
+          <circle cx="${destX}" cy="${destY}" r="10" fill="#8b5e45" stroke="#faf7f1" stroke-width="3" />
+          <text x="${destX}" y="${parseFloat(destY) - 15}" fill="#694535" font-size="13" font-weight="700" text-anchor="middle">${escapeHtml(this.activeExperience.venue || "Venue")}</text>
         </svg>
       </div>
     `;

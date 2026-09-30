@@ -8,7 +8,7 @@
  * - 100% on-device privacy telemetry
  */
 
-import { apiClient } from "../api/client.js";
+import { apiClient } from "../services/client.js";
 import { escapeHtml, formatPrice } from "../utilities/formatting.js";
 
 export class ProfileModal {
@@ -91,7 +91,7 @@ export class ProfileModal {
               <div class="profile-user-info">
                 <div class="profile-title-row">
                   <h2 class="profile-modal-title" id="profile-modal-title">My Edge Profile</h2>
-                  <span class="profile-privacy-badge">🔒 100% On-Device</span>
+                  <span class="profile-privacy-badge">100% ON-DEVICE</span>
                 </div>
                 <p class="profile-user-meta">User ID: <code>${escapeHtml(this.userId)}</code> · Learned In-Process via SQLite & Qdrant Edge</p>
               </div>
@@ -107,10 +107,10 @@ export class ProfileModal {
           <!-- Profile Nav Tabs -->
           <div class="profile-tabs-bar">
             <button type="button" class="profile-tab-btn ${this.activeTab === "taste" ? "active" : ""}" id="tab-btn-taste">
-              <span>🎯 Learned Taste Profile</span>
+              <span>Learned Taste Profile</span>
             </button>
             <button type="button" class="profile-tab-btn ${this.activeTab === "saved" ? "active" : ""}" id="tab-btn-saved">
-              <span>🔖 Saved Collection (${savedCount})</span>
+              <span>Saved Collection (${savedCount})</span>
             </button>
           </div>
 
@@ -132,7 +132,6 @@ export class ProfileModal {
       <div class="taste-tab-content">
         <!-- Privacy & Edge Intelligence Banner -->
         <div class="profile-info-banner">
-          <div class="banner-icon">⚡</div>
           <div class="banner-text">
             <strong>Adaptive Edge Personalization</strong>
             <p>Every time you bookmark movies or venues, QdrantCity dynamically adapts your local vector recommendations in real time on your device. Zero user data leaves your machine.</p>
@@ -143,7 +142,6 @@ export class ProfileModal {
           !hasHistory
             ? `
           <div class="profile-empty-history">
-            <div class="empty-icon">💡</div>
             <h3>No learned preferences yet</h3>
             <p>Save experiences (like horror movies or mystery rooms) to see your local taste profile adapt live!</p>
           </div>
@@ -218,7 +216,7 @@ export class ProfileModal {
         <!-- Reset Button -->
         <div class="profile-footer-actions">
           <button type="button" class="btn-profile-reset" id="btn-profile-reset" title="Purge local memory and reset taste to default">
-            <span>🗑️ Reset Learned Memory</span>
+            <span>Reset Learned Memory</span>
           </button>
           <span class="reset-help-text">Instantly reset your learned taste back to baseline for live demo testing.</span>
         </div>
@@ -230,7 +228,6 @@ export class ProfileModal {
     if (this.savedExperiences.length === 0) {
       return `
         <div class="profile-empty-saved">
-          <div class="empty-icon">🔖</div>
           <h3>Your saved collection is empty</h3>
           <p>Click the bookmark icon on any movie, party, or event card to save it locally.</p>
         </div>
@@ -253,7 +250,7 @@ export class ProfileModal {
                   <div class="saved-item-info">
                     <span class="saved-item-category">${escapeHtml((exp.category || "Event").toUpperCase())}</span>
                     <h4 class="saved-item-title">${title}</h4>
-                    <span class="saved-item-venue">📍 ${venue}, ${city} · <strong>${priceText}</strong></span>
+                    <span class="saved-item-venue">${venue}, ${city} · <strong>${priceText}</strong></span>
                   </div>
                   <div class="saved-item-actions">
                     ${

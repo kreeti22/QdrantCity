@@ -166,7 +166,7 @@ export class DiscoveryPage {
             <div class="nav-links-right">
               <button type="button" class="sync-action-btn" id="sync-action-btn" title="Inspect Edge Substrate status">
                 <span class="sync-badge local" id="sync-badge">Edge Substrate</span>
-                <span class="sync-action-label">⚡ Qdrant</span>
+                <span class="sync-action-label">Qdrant</span>
               </button>
             </div>
           </nav>
@@ -483,7 +483,7 @@ export class DiscoveryPage {
               </div>
               <div class="sync-spec-row">
                 <span class="sync-spec-label">Privacy Guarantee:</span>
-                <span class="sync-spec-val success">🔒 Zero user tracking / 100% On-Device Semantic Memory</span>
+                <span class="sync-spec-val success">Zero user tracking / 100% on-device semantic memory</span>
               </div>
               <div class="sync-spec-row">
                 <span class="sync-spec-label">Sync Strategy:</span>
@@ -496,7 +496,7 @@ export class DiscoveryPage {
             </div>
             <div class="sync-modal-actions">
               <button type="button" class="btn-sync-trigger" id="btn-sync-trigger" style="width: 100%;">
-                <span>🔄 Pull Catalog Updates Now</span>
+                <span>Pull Catalog Updates Now</span>
               </button>
             </div>
             <div class="sync-modal-feedback" id="sync-modal-feedback" style="display:none;"></div>
@@ -548,7 +548,7 @@ export class DiscoveryPage {
           }
         } finally {
           triggerBtn.disabled = false;
-          triggerBtn.innerHTML = "<span>🔄 Check & Pull Cloud Updates</span>";
+          triggerBtn.innerHTML = "<span>Check & Pull Cloud Updates</span>";
         }
       });
     }
