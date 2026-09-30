@@ -6,6 +6,7 @@
  */
 
 import { apiClient } from "../api/client.js";
+import { ExperienceCard } from "./ExperienceCard.js";
 import {
   escapeHtml,
   formatDateTime,
@@ -62,7 +63,10 @@ export class ExperienceDetail {
   _renderModal(exp, isLoadingFull = false) {
     if (!exp) return;
 
-    const title = escapeHtml(exp.title || "Untitled Experience");
+    const rawTitle = exp.title || "Untitled Experience";
+    const cleanTitle = ExperienceCard.formatCardTitle(rawTitle);
+    const title = escapeHtml(cleanTitle);
+    const subtitle = cleanTitle !== rawTitle ? escapeHtml(rawTitle) : "";
     const category = escapeHtml(exp.category || "Experience");
     const description = escapeHtml(exp.description || "No description provided.");
     const venue = escapeHtml(exp.venue || "Venue TBA");
@@ -144,7 +148,10 @@ export class ExperienceDetail {
 
             <div class="modal-content-details">
               <div class="modal-title-row">
-                <h1 class="modal-title" id="modal-title">${title}</h1>
+                <div class="modal-title-group">
+                  <h1 class="modal-title" id="modal-title">${title}</h1>
+                  ${subtitle ? `<div class="modal-subtitle">${subtitle}</div>` : ""}
+                </div>
                 ${
                   rating
                     ? `<div class="modal-rating">

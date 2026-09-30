@@ -10,10 +10,13 @@ from app.main import create_app
 
 
 @pytest.fixture(scope="module")
-def client():
+def client(tmp_path_factory):
+    edge_dir = tmp_path_factory.mktemp("smoke_edge")
+    mem_dir = tmp_path_factory.mktemp("smoke_mem")
     s = Settings(
-        edge_storage_path="data/edge",
-        collection_name="city_experiences",
+        edge_storage_path=edge_dir,
+        sqlite_db_path=str(mem_dir / "user_memory.db"),
+        collection_name="smoke_experiences",
         auto_seed_on_startup=True,
         sync_enabled=False,
     )

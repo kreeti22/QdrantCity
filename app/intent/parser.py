@@ -132,6 +132,44 @@ WEEKDAY_NAMES = {
 class LocalQueryParser:
     """Deterministic, local query parser extracting structured intent and filters offline."""
 
+    @staticmethod
+    def is_gibberish(text: str) -> bool:
+        """Deterministic check for nonsensical keyboard smash / unpronounceable strings (e.g. 'dhcashivfhrgvi', 'asdfghjkl')."""
+        if not text or not text.strip():
+            return False
+        clean = re.sub(r"[^a-zA-Z\s]", "", text).lower().strip()
+        words = clean.split()
+        if not words:
+            return False
+
+        vowels = set("aeiouy")
+        known_safe = {
+            "imax", "dj", "vr", "4dx", "70mm", "35mm", "edm", "rnb", "hiphop", "qawwali",
+            "sitar", "tabla", "maratha", "prithvi", "ncpa", "pune", "delhi", "mumbai",
+            "dune", "tumbbad", "sholay", "ddlj", "kamshet", "pawna", "sahyadri",
+        }
+
+        keyboard_walks = ["qwerty", "asdfgh", "zxcvbn", "dfghjk", "fghjkl", "wertyu", "ertyui", "rtyuio"]
+
+        for w in words:
+            if w in known_safe or len(w) < 4:
+                continue
+            # Check keyboard walk patterns
+            if any(walk in w for walk in keyboard_walks):
+                return True
+            # Check repeated characters (e.g. 'aaaaa', 'zzzzz')
+            if re.search(r"(.)\1{3,}", w):
+                return True
+            # Check 5+ consecutive consonants (unpronounceable in natural text)
+            if re.search(r"[^aeiouy\s]{5,}", w):
+                return True
+            # Low vowel ratio on long words (length >= 6 with < 18% vowels)
+            v_count = sum(1 for c in w if c in vowels)
+            if len(w) >= 6 and (v_count == 0 or (v_count / len(w) < 0.18)):
+                return True
+
+        return False
+
     def __init__(self, settings: Optional[Settings] = None, clock: Optional[TimeProvider] = None):
         self.settings = settings or get_settings()
         self.clock = clock or get_clock()
@@ -144,6 +182,7 @@ class LocalQueryParser:
             return StructuredSearchIntent(
                 original_query=query or "",
                 semantic_query="",
+                is_gibberish=False,
                 parse_latency_ms=0.0,
             )
 
@@ -209,6 +248,7 @@ class LocalQueryParser:
             location_required=location_required,
             excluded_categories=excluded_cats,
             excluded_subcategories=excluded_subcats,
+            is_gibberish=self.is_gibberish(original_text),
             parse_latency_ms=round(latency_ms, 3),
         )
 

@@ -312,6 +312,39 @@ def search_experiences(
     # Text used for dense and BM25 vectorization
     vector_search_text = semantic_query if semantic_query else (query_str or "")
 
+    # Gibberish / keyboard smash query rejection (Point 1)
+    is_gib = False
+    if intent and intent.is_gibberish:
+        is_gib = True
+    elif has_text and LocalQueryParser.is_gibberish(query_str):
+        is_gib = True
+
+    if is_gib:
+        t_total = (time.perf_counter() - t_total_start) * 1000
+        latency = SearchLatencyMetrics(
+            embedding_ms=0.0,
+            search_ms=0.0,
+            total_ms=round(t_total, 2),
+            dense_embedding_ms=0.0,
+            dense_search_ms=0.0,
+            bm25_embedding_ms=0.0,
+            bm25_search_ms=0.0,
+            fusion_ms=0.0,
+            query_parsing_ms=round(t_parse, 2) if t_parse is not None else 0.1,
+        )
+        metrics.record_search(success=True, latency_ms=latency.total_ms)
+        return SearchResponse(
+            query=query_str or "",
+            semantic_query=semantic_query,
+            mode=mode,
+            total_returned=0,
+            latency_ms=latency,
+            filters_applied=None,
+            intent=intent.model_dump() if intent else None,
+            personalization=None,
+            results=[],
+        )
+
     # Compile applied filters dictionary for response transparency
     applied_filters: Dict[str, Any] = {}
     if filters_dict:

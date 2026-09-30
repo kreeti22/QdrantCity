@@ -215,8 +215,8 @@ def test_dual_vector_idempotency(hybrid_env):
 
     # Re-seed over existing data
     seeded = seed_database(repo, settings, embedding_service=service, overwrite=True)
-    assert seeded == 102
-    assert repo.count() == 102
+    assert seeded == 115
+    assert repo.count() == 115
 
     # Check that retrieve preserves named vectors
     records = repo.shard.retrieve([1], with_payload=True, with_vector=True)

@@ -16,6 +16,155 @@ import {
 
 export class ExperienceCard {
   /**
+   * Formats a raw experience title into a simple, punchy event or movie name.
+   * Keeps the card title clean for judges while preserving details in the description.
+   *
+   * @param {string} rawTitle - Full original title
+   * @returns {string} Clean event or movie name
+   */
+  static formatCardTitle(rawTitle) {
+    if (!rawTitle) return "Untitled Experience";
+
+    const cleanMap = {
+      "Interstellar: 70mm IMAX Special Presentation": "Interstellar",
+      "Dilwale Dulhania Le Jayenge": "Dilwale Dulhania Le Jayenge",
+      "Sholay (70mm Revival)": "Sholay",
+      "Sitar & Tabla Jugalbandi": "Sitar & Tabla Jugalbandi",
+      "Beethoven & Tchaikovsky Symphony": "Beethoven & Tchaikovsky Symphony",
+      "R.D. Burman Tribute Symphony": "R.D. Burman Tribute Symphony",
+      "Bandra Acoustic Sunset": "Bandra Acoustic Sunset",
+      "The Habitat Comedy Special": "The Habitat Comedy Special",
+      "Bandra Unscripted Improv": "Bandra Unscripted Improv",
+      "Sakharam Binder (Hindi Drama)": "Sakharam Binder",
+      "Sangeet Shakuntal (Marathi Natak)": "Sangeet Shakuntal",
+      "NCPA Contemporary Monologues": "Contemporary Monologues",
+      "Wankhede Stadium & Museum Tour": "Wankhede Stadium Tour",
+      "Mumbai Coastal Sunrise Run": "Mumbai Coastal Sunrise Run",
+      "Mumbai Harbour Sunset Kayaking": "Mumbai Harbour Kayaking",
+      "Mumbai Art Deco Heritage Walk": "Art Deco Heritage Walk",
+      "Elephanta Caves Ferry Excursion": "Elephanta Caves Tour",
+      "Kanheri Caves & Forest Trail": "Kanheri Caves Trail",
+      "Khau Galli Food Discovery Walk": "Khau Galli Food Walk",
+      "Kala Ghoda Arts Showcase": "Kala Ghoda Arts Showcase",
+      "Banganga Classical Music Festival": "Banganga Music Festival",
+      "Mumbai Literature Festival": "Mumbai Literature Festival",
+      "Warli Painting Masterclass": "Warli Painting Masterclass",
+      "Irani Chai & Baking Workshop": "Irani Chai & Baking Workshop",
+      "Bollywood Choreography Workshop": "Bollywood Choreography Workshop",
+      "Chhatrapati Shivaji Maharaj Vastu Sangrahalaya (CSMVS) Heritage Tour": "CSMVS Museum Tour",
+      "Dr. Bhau Daji Lad City Museum: Victorian Decorative Arts": "Dr. Bhau Daji Lad Museum",
+      "Jehangir Art Gallery: Contemporary Indian Painters": "Jehangir Art Gallery",
+      "PVR Director's Cut Luxury Screening: Dune Part Two": "Dune: Part Two",
+      "World Cinema Retrospective: Satyajit Ray's Apu Trilogy": "The Apu Trilogy",
+      "Delite Cinema Heritage Single-Screen Bollywood Premiere": "Delite Cinema Premiere",
+      "Late Night Underground Standup Comedy Showcase": "Late Night Standup Comedy",
+      "Sufi Qawwali Night at Hazrat Nizamuddin Dargah": "Nizamuddin Sufi Qawwali",
+      "Delhi International Classical Music Evening: Sarod & Flute": "Sarod & Flute Classical Evening",
+      "Hauz Khas Indie Acoustic Evening: Jazz & Fusion": "Hauz Khas Indie Acoustic",
+      "Delhi Comedy Club Weekend Special: Dilliwaale": "Dilliwaale Comedy Special",
+      "Punchlines & Parathas: Late Night Comedy Jam": "Punchlines & Parathas",
+      "National School of Drama Ensemble: Andha Yug": "Andha Yug",
+      "Habib Tanvir's Charandas Chor Revival Play": "Charandas Chor",
+      "Shakespeare in Delhi: A Midsummer Night's Dream": "A Midsummer Night's Dream",
+      "Arun Jaitley Cricket Stadium Walk & Feroz Shah Kotla History": "Arun Jaitley Stadium Tour",
+      "Delhi Ridge Forest Trail Cycling & Endurance Ride": "Delhi Ridge Forest Cycling",
+      "Old Delhi Shahjahanabad Heritage & Street Food Trail": "Old Delhi Heritage & Food Trail",
+      "Qutub Minar Complex & Mehrauli Archaeological Twilight Walk": "Qutub Minar Twilight Walk",
+      "Humayun's Tomb Mughal Charbagh Architectural Tour": "Humayun's Tomb Mughal Tour",
+      "Lodhi Art District Open-Air Street Mural Walking Tour": "Lodhi Art District Murals",
+      "Delhi International Arts Festival: Classical Fusion Gala": "Delhi Arts Festival",
+      "Dilli Haat Crafts & Regional Food Carnival": "Dilli Haat Food & Crafts Carnival",
+      "Kathak Classical Dance Rhythm & Footwork Masterclass": "Kathak Dance Masterclass",
+      "Traditional Indian Wooden Block Printing on Cotton": "Wooden Block Printing Workshop",
+      "Mughlai Kebab & Biryani Culinary Masterclass": "Mughlai Kebab & Biryani Workshop",
+      "National Museum: Harappan Civilization & Sacred Relics": "National Museum: Harappan Relics",
+      "National Gallery of Modern Art (NGMA): Modern Indian Masters": "NGMA Modern Masters",
+      "National Crafts Museum: Village Courtyards & Textiles": "National Crafts Museum",
+      "Kiran Nadar Museum of Art (KNMA): Contemporary Retrospectives": "Kiran Nadar Museum of Art",
+      "Urvashi Cinema 4K Laser Curved Screen Experience": "Urvashi Cinema 4K Showcase",
+      "PVR Forum Mall IMAX: Sci-Fi & Hollywood Blockbusters": "PVR Forum IMAX Blockbusters",
+      "Suchitra Film Society World Cinema Club Screening": "Suchitra World Cinema Club",
+      "Carnatic Classical Concert: Veena & Mridangam Recital": "Carnatic Veena & Mridangam Recital",
+      "Chowdiah Memorial Hall Grand Carnatic Vocal Recital": "Chowdiah Carnatic Vocal Recital",
+      "Fandom at Gilly's: Indie Rock & Fusion Night": "Fandom Indie Rock & Fusion",
+      "That Comedy Club: Bangalore Tech & Startup Roasts": "Bangalore Tech & Startup Roasts",
+      "Kannada Standup Comedy: Namma Ooru Comedy Fest": "Namma Ooru Comedy Fest",
+      "Ranga Shankara Kannada Drama: Girish Karnad's Tughlaq": "Tughlaq",
+      "Jagriti Theatre Contemporary English Drama": "Contemporary English Drama",
+      "Kanteerava Stadium Track Session & Athletic Sprint Training": "Kanteerava Sprint Training",
+      "Turf Football & Futsal Community Tournament": "Turf Football & Futsal",
+      "Cubbon Park Heritage & Botanical Morning Nature Walk": "Cubbon Park Botanical Walk",
+      "Lalbagh Botanical Gardens & 1889 Glass House Historical Tour": "Lalbagh Glass House Tour",
+      "Malleswaram Heritage & Filter Coffee Trail": "Malleswaram Filter Coffee Trail",
+      "Bangalore Microbrewery & Craft Beer Tasting Tour": "Bangalore Craft Beer Tour",
+      "Bangalore Literature Festival (BLF) Cultural Weekend": "Bangalore Literature Festival",
+      "Karaga Shaktyotsava Heritage Cultural Celebration": "Karaga Shaktyotsava",
+      "Terracotta & Ceramic Pottery Throwing Masterclass": "Ceramic Pottery Throwing",
+      "Channapatna Wooden Toy Lacquer Craft Workshop": "Channapatna Wooden Toy Craft",
+      "South Indian Filter Coffee Brewing & Bean Roasting Workshop": "Filter Coffee Brewing Workshop",
+      "Museum of Art & Photography (MAP) Contemporary Exhibitions": "MAP Contemporary Art",
+      "Visvesvaraya Industrial & Technological Museum (VITM)": "Visvesvaraya Tech Museum",
+      "National Gallery of Modern Art (NGMA Bengaluru) Heritage House": "NGMA Bengaluru Heritage House",
+      "Cinepolis VIP IMAX: Hollywood & Regional Spectacles": "Cinepolis VIP IMAX",
+      "NFAI Heritage Archives: Indian Silent Era & Masterpieces": "NFAI Silent Cinema Archives",
+      "Prabhat Talkies Single-Screen Marathi Cinema Premiere": "Prabhat Talkies Premiere",
+      "Sawai Gandharva Classical Sangeet Evening Showcase": "Sawai Gandharva Classical Sangeet",
+      "High Spirits Indie Live Band & Craft Beer Night": "High Spirits Live Band Night",
+      "Pune Standup Comedy Club: Puneri Punches": "Puneri Punches Comedy Club",
+      "Koregaon Park English Standup Comedy Night": "Koregaon Park Comedy Night",
+      "Bal Gandharva Ranga Mandir: Classic Marathi Natak 'Ti Phulrani'": "Ti Phulrani",
+      "Yashwantrao Chavan Natyagruha Experimental Marathi Theatre": "Experimental Marathi Theatre",
+      "Shree Shiv Chhatrapati Sports Complex Badminton & Squash": "Balewadi Badminton & Squash",
+      "Sinhagad Fort Mountain Trail Trek & Kanda Bhajji Breakfast": "Sinhagad Fort Mountain Trek",
+      "Shaniwar Wada & Historic Peth Walking Heritage Trail": "Shaniwar Wada Heritage Trail",
+      "Aga Khan Palace Heritage & Gandhi Memorial Tour": "Aga Khan Palace Heritage Tour",
+      "Pune Peth Street Food & Puneri Misal Trail": "Pune Peth Street Food Trail",
+      "Pataleshwar 8th-Century Rock-Cut Cave Temple Excursion": "Pataleshwar Rock-Cut Caves",
+      "Pune Ganeshotsav Manache Ganpati Heritage Showcase": "Pune Manache Ganpati Showcase",
+      "Pune International Film Festival (PIFF) Gala": "Pune International Film Festival",
+      "Hindustani Classical Vocal Riyaaz & Raga Workshop": "Hindustani Classical Vocal Riyaaz",
+      "Calligraphy & Modi Script Traditional Workshop": "Calligraphy & Modi Script Workshop",
+      "Organic Coffee Brewing & Puneri Bakery Workshop": "Organic Coffee & Bakery Workshop",
+      "Raja Dinkar Kelkar Museum: 20,000 Rare Indian Artifacts": "Raja Dinkar Kelkar Museum",
+      "Tribal Research & Training Institute Cultural Museum": "Tribal Research Cultural Museum",
+      "Mumbai Comedy Night: Open Mic & Standup": "Mumbai Comedy Night",
+      "Blade Runner 2049": "Blade Runner 2049",
+      "Hereditary & Tumbbad: Horror Showcase": "Hereditary & Tumbbad",
+      "Neon Horizon: Retro Synthwave Night": "Neon Horizon",
+      "Sahyadri Dawn Trek & Rappelling": "Sahyadri Dawn Trek & Rappelling",
+      "Pawna Lake Kayaking & Stargazing Camp": "Pawna Lake Stargazing & Kayak",
+      "Kamshet Tandem Paragliding Flight": "Kamshet Tandem Paragliding",
+      "Torq03 Pro Go-Karting Championship": "Torq03 Pro Go-Karting",
+      "Equilibrium Rock Climbing Challenge": "Equilibrium Rock Climbing",
+      "Haunted Forest Night Trek": "Haunted Forest Night Trek",
+      "Bhangarh Horror Mystery Room Challenge": "Bhangarh Horror Mystery Room",
+      "The Haunted Asylum: VR Survival Adventure": "The Haunted Asylum (VR)",
+      "Midnight Kayaking & Haunted Island Trail": "Midnight Kayaking & Haunted Island",
+      "Midnight Ghost Walk & Haunted Ruins": "Midnight Ghost Walk",
+      "The Dark Room: Ghost Stories & Horror Comedy": "The Dark Room"
+    };
+
+    if (cleanMap[rawTitle]) {
+      return cleanMap[rawTitle];
+    }
+
+    // Dynamic heuristics:
+    let clean = rawTitle;
+    if (clean.includes(": ")) {
+      const parts = clean.split(": ");
+      if (parts[1] && parts[1].trim().length >= 3 && parts[1].trim().length <= 36) {
+        clean = parts[1].trim();
+      } else if (parts[0] && parts[0].trim().length >= 3 && parts[0].trim().length <= 36) {
+        clean = parts[0].trim();
+      }
+    }
+
+    // Strip trailing parentheticals
+    clean = clean.replace(/\s*\([^)]*\)\s*$/, "").trim();
+    return clean || rawTitle;
+  }
+
+  /**
    * Generates HTML markup for an experience card.
    *
    * @param {Object} experience - The normalized experience object from backend
@@ -26,7 +175,9 @@ export class ExperienceCard {
 
     const id = experience.id ?? "";
     const rawTitle = experience.title || "Untitled Experience";
-    const title = escapeHtml(rawTitle);
+    const cleanTitle = ExperienceCard.formatCardTitle(rawTitle);
+    const title = escapeHtml(cleanTitle);
+    const description = escapeHtml(experience.description || "");
     const category = escapeHtml(experience.category || "Experience");
     const venue = escapeHtml(experience.venue || "Venue TBA");
     const neighborhood = escapeHtml(experience.neighborhood || "");
@@ -128,6 +279,12 @@ export class ExperienceCard {
                 : ""
             }
           </div>
+
+          ${
+            description
+              ? `<p class="card-description">${description}</p>`
+              : ""
+          }
 
           <div class="card-meta">
             <div class="meta-row location-row">

@@ -52,6 +52,9 @@ class StructuredSearchIntent(BaseModel):
     themes: List[str] = Field(default_factory=list)
     unresolved_terms: List[str] = Field(default_factory=list)
 
+    # Gibberish / noise query detection
+    is_gibberish: bool = False
+
     # Execution telemetry
     parse_latency_ms: float = 0.0
 
