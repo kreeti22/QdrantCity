@@ -27,7 +27,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # ---- Pre-download FastEmbed ONNX model during image build ----
 # This ensures 100% offline operation at runtime — no network calls needed.
-RUN python -c "from fastembed import TextEmbedding; TextEmbedding(model_name='BAAI/bge-small-en-v1.5')"
+RUN mkdir -p /opt/fastembed && \
+    python -c "from fastembed import TextEmbedding; TextEmbedding(model_name='BAAI/bge-small-en-v1.5', cache_dir='/opt/fastembed')"
 
 # ---- Application source ----
 COPY app/ ./app/
@@ -48,6 +49,7 @@ ENV PYTHONUNBUFFERED=1 \
     QDRANT_EDGE_USER_MEMORY_PATH="/app/data/memory/user_memory.db" \
     QDRANT_EDGE_SYNC_CHECKPOINT_PATH="/app/data/sync/sync_checkpoint.json" \
     QDRANT_EDGE_EMBEDDING_MODEL_NAME="BAAI/bge-small-en-v1.5" \
+    QDRANT_EDGE_EMBEDDING_CACHE_DIR="/opt/fastembed" \
     QDRANT_EDGE_VECTOR_SIZE="384" \
     QDRANT_EDGE_AUTO_SEED_ON_STARTUP="true"
 

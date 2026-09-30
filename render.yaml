@@ -20,6 +20,8 @@ services:
         value: /app/data/memory/user_memory.db
       - key: QDRANT_EDGE_SYNC_CHECKPOINT_PATH
         value: /app/data/sync/sync_checkpoint.json
+      - key: QDRANT_EDGE_EMBEDDING_CACHE_DIR
+        value: /opt/fastembed
       - key: QDRANT_EDGE_CORS_ORIGINS
         value: "*"
     disk:
