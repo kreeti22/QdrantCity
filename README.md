@@ -40,6 +40,14 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000
 - 🔄 **Optional catalog sync** — pull catalog updates from a central server when online
 - 158+ automated tests passing
 
+## Deploy to Render
+
+This repository includes a [`render.yaml`](render.yaml) Blueprint for a Docker web service. In Render, choose **New > Blueprint**, connect the repository, and deploy the `qdrantcity` service. The Blueprint provisions a persistent `/app/data` disk for the Qdrant Edge shard, SQLite memory, and sync checkpoint.
+
+The container binds to Render's injected `PORT` and exposes `/live` as its health check. The first build downloads the local FastEmbed model, so the initial deploy can take several minutes. The included 1 GB persistent disk requires Render's Starter plan or higher.
+
+For a custom frontend origin, replace `QDRANT_EDGE_CORS_ORIGINS` in `render.yaml` with the deployed origin or configure that environment variable in the Render dashboard.
+
 ---
 
 ## Phase 1D: Local Query Understanding & Structured Intent

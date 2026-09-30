@@ -31,6 +31,7 @@ RUN python -c "from fastembed import TextEmbedding; TextEmbedding(model_name='BA
 
 # ---- Application source ----
 COPY app/ ./app/
+COPY data/osm/ ./data/osm/
 COPY data/seed/ ./data/seed/
 COPY frontend/ ./frontend/
 
@@ -58,9 +59,10 @@ VOLUME ["/app/data"]
 
 # ---- Health check ----
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-    CMD curl -f http://localhost:8000/live || exit 1
+    CMD curl -f http://localhost:${PORT:-8000}/live || exit 1
 
 EXPOSE 8000
 
-# Run with uvicorn — workers=1 because Qdrant Edge is in-process singleton
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1"]
+# Run with uvicorn — workers=1 because Qdrant Edge is an in-process singleton.
+# Render supplies PORT; the default keeps local Docker usage on port 8000.
+CMD ["sh", "-c", "exec uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000} --workers 1"]
