@@ -133,6 +133,8 @@ class Settings(BaseSettings):
     embedding_model_version: str = "1.5"
     embedding_dimension: int = 384
     embedding_cache_dir: Optional[Path] = None
+    embedding_batch_size: int = 8
+    routing_local_enabled: bool = True
 
     # Vector specification for Qdrant Edge
     vector_size: int = 384

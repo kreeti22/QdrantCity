@@ -127,7 +127,9 @@ def create_app(settings: Optional[Settings] = None) -> FastAPI:
 
         # 7. Local OpenStreetMap Routing Engine
         from app.routing.service import get_routing_service
-        routing_service = get_routing_service()
+        routing_service = get_routing_service(
+            load_local=app_settings.routing_local_enabled,
+        )
         app.state.routing_service = routing_service
 
         # 7. Seed initial dataset if collection is empty

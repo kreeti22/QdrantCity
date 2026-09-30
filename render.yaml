@@ -2,7 +2,7 @@ services:
   - type: web
     name: qdrantcity
     runtime: docker
-    plan: standard
+    plan: free
     dockerfilePath: ./Dockerfile
     dockerContext: .
     healthCheckPath: /live
@@ -22,9 +22,9 @@ services:
         value: /app/data/sync/sync_checkpoint.json
       - key: QDRANT_EDGE_EMBEDDING_CACHE_DIR
         value: /opt/fastembed
+      - key: QDRANT_EDGE_ROUTING_LOCAL_ENABLED
+        value: "false"
+      - key: QDRANT_EDGE_EMBEDDING_BATCH_SIZE
+        value: "8"
       - key: QDRANT_EDGE_CORS_ORIGINS
         value: "*"
-    disk:
-      name: qdrantcity-data
-      mountPath: /app/data
-      sizeGB: 1
