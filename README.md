@@ -13,8 +13,8 @@ pip install -r requirements.txt
 # 2. Start the server (auto-seeds 115 experiences on first run)
 uvicorn app.main:app --host 0.0.0.0 --port 8000
 
-# 3. Open the discovery UI
-#    http://localhost:8000/ui
+# 3. Open the discovery UI (served by FastAPI)
+#    http://localhost:8000/
 
 # 4. Or use Docker
 #    docker-compose up --build
@@ -23,7 +23,8 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000
 **Key endpoints:**
 | URL | Purpose |
 |---|---|
-| `http://localhost:8000/ui` | Discovery & Routing UI |
+| `http://localhost:8000/` | Discovery & Routing UI |
+| `http://localhost:8000/ui` | Compatibility URL for the UI |
 | `http://localhost:8000/docs` | Interactive API docs |
 | `http://localhost:8000/route` | Local OSM shortest path routing |
 | `http://localhost:8000/api/routing/status` | Road graph diagnostics |

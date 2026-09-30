@@ -7,7 +7,8 @@ version: "3.8"
 # Quick start:
 #   docker-compose up --build
 #
-# Access the UI:  http://localhost:8000/ui
+# Access the UI:  http://localhost:8000/
+# Compatibility:  http://localhost:8000/ui
 # API docs:       http://localhost:8000/docs
 # Health:         http://localhost:8000/live
 # Metrics:        http://localhost:8000/metrics

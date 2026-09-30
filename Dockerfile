@@ -34,7 +34,8 @@ RUN mkdir -p /opt/fastembed && \
 COPY app/ ./app/
 COPY data/osm/ ./data/osm/
 COPY data/seed/ ./data/seed/
-COPY frontend/ ./frontend/
+# The frontend is plain browser-ready assets; package its production output with the backend.
+COPY frontend/ ./static/
 
 # ---- Default environment variables ----
 # These can be overridden at container runtime or via docker-compose.
