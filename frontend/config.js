@@ -5,7 +5,7 @@
  * - Checks window.__ENV__ (injected via deployment/environment)
  * - Checks localStorage override ('QDRANT_API_BASE_URL')
  * - If running on same origin as backend (e.g. /ui), uses relative path ""
- * - Falls back to default http://localhost:8000
+ * - Falls back to the deployed Render API
  */
 
 const getApiBaseUrl = () => {
@@ -22,7 +22,7 @@ const getApiBaseUrl = () => {
       return "";
     }
   }
-  return "http://localhost:8000";
+  return "https://qdrantcity-2btt.onrender.com";
 };
 
 export const CONFIG = {
