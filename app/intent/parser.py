@@ -97,9 +97,10 @@ SUPPORTED_FORMATS = {
 
 # Known neighborhoods represented in dataset
 KNOWN_NEIGHBORHOODS = [
-    # Indian Metro Neighborhoods
+    # Indian Metro & Goa Neighborhoods
     "Bandra", "Juhu", "Colaba", "Khar", "Fort", "Dadar", "Andheri", "Worli", "Marine Drive", "Byculla", "Powai",
     "Connaught Place", "Hauz Khas", "Mandi House", "Chandni Chowk", "Vasant Kunj", "Saket", "Lodhi", "Janpath", "Mehrauli",
+    "Anjuna", "Vagator", "Baga", "Calangute", "Panaji", "Candolim", "Morjim", "Ashwem", "Palolem", "Arpora", "Siolim", "Cansaulim", "Mollem",
     "Koramangala", "Indiranagar", "Whitefield", "JP Nagar", "Malleshwaram", "MG Road", "Cubbon Park", "Jayanagar",
     "Koregaon Park", "Kothrud", "Deccan", "Shivajinagar", "Camp", "Viman Nagar", "Baner", "Aundh",
     # Legacy / baseline neighborhoods
@@ -110,7 +111,9 @@ KNOWN_NEIGHBORHOODS = [
 
 # Known venues represented in dataset
 KNOWN_VENUES = [
-    # Indian Cultural Venues & Landmarks
+    # Indian Cultural Venues, Goa Nightlife & Landmarks
+    "Casino Pride", "Deltin Royale", "HillTop", "Curlies Beach Shack", "Silent Noise Club",
+    "Club Cubana", "SinQ Nightclub", "Titlie Culinary Bar", "Thalassa", "Mystery Rooms",
     "Prithvi Theatre", "NCPA Mumbai", "National Centre for the Performing Arts", "Habitat Comedy Club",
     "Shri Ram Centre", "Kamani Auditorium", "National Museum", "National Gallery of Modern Art", "NGMA",
     "Ranga Shankara", "Bangalore International Centre", "Chowdiah Memorial Hall", "Museum of Art & Photography", "MAP",
@@ -566,8 +569,9 @@ class LocalQueryParser:
         neighborhood_field = None
         venue_field = None
 
-        # 1. Cities: Indian metros & legacy
+        # 1. Cities: Indian metros, Goa & legacy
         city_patterns = [
+            (r"\b(?:Goa|North Goa|South Goa|Panaji|Panjim|Calangute|Baga|Anjuna|Vagator|Candolim|Morjim|Ashwem)\b", "Goa"),
             (r"\b(?:Mumbai|Bombay)\b", "Mumbai"),
             (r"\b(?:Delhi|New Delhi|NCR)\b", "Delhi"),
             (r"\b(?:Bengaluru|Bangalore)\b", "Bengaluru"),

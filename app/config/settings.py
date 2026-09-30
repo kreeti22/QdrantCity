@@ -24,19 +24,24 @@ class Settings(BaseSettings):
     # Server deployment settings
     host: str = "0.0.0.0"
     port: int = 8000
-    cors_origins: List[str] = ["*"]
+    cors_origins: Union[List[str], str] = ["*"]
 
     @field_validator("cors_origins", mode="before")
     @classmethod
     def parse_cors_origins(cls, v: Any) -> List[str]:
         if isinstance(v, str):
             v_trimmed = v.strip()
+            if not v_trimmed:
+                return ["*"]
             if v_trimmed.startswith("[") and v_trimmed.endswith("]"):
                 try:
-                    return json.loads(v_trimmed)
+                    parsed = json.loads(v_trimmed)
+                    if isinstance(parsed, list):
+                        return [str(item).strip() for item in parsed if str(item).strip()]
                 except Exception:
                     pass
-            return [origin.strip() for origin in v_trimmed.split(",") if origin.strip()]
+            origins = [origin.strip() for origin in v_trimmed.split(",") if origin.strip()]
+            return origins if origins else ["*"]
         elif isinstance(v, (list, tuple)):
             return list(v)
         return ["*"]

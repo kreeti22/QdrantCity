@@ -10,13 +10,12 @@ export class QueryChips {
     container,
     onSelect,
     chips = [
-      { label: "Movies near me", query: "movies near me" },
-      { label: "Movie at PVR", query: "movie at PVR" },
-      { label: "Events near Connaught Place", query: "events near Connaught Place" },
-      { label: "Concert in Delhi", query: "concert in Delhi" },
-      { label: "Comedy in Delhi", query: "comedy in Delhi" },
-      { label: "IMAX Sci-Fi", query: "IMAX sci-fi movies" },
-      { label: "Delhi Sufi Qawwali", query: "Delhi sufi qawwali" },
+      { label: "⚡ Adventurous & Thrilling", query: "adventurous and thrilling" },
+      { label: "🌴 Goa Parties & Casinos", query: "Goa night parties casinos" },
+      { label: "🍿 Delhi Movies", query: "movies in Delhi" },
+      { label: "🧩 Mystery Rooms Delhi", query: "mystery rooms Delhi" },
+      { label: "🎶 Nizamuddin Sufi Qawwali", query: "Nizamuddin Sufi Qawwali" },
+      { label: "🎭 Late Night Comedy", query: "comedy in Delhi" },
     ],
   }) {
     this.container = container;

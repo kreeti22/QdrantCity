@@ -69,6 +69,13 @@ class UserMemoryService:
                 meta["title"] = title
             if price is not None:
                 meta["price"] = price
+            if self.exp_repo:
+                try:
+                    exp = self.exp_repo.get_by_id(int(experience_id))
+                    if exp and exp.subcategories:
+                        meta["subcategories"] = exp.subcategories
+                except Exception:
+                    pass
             self.repo.record_interaction(
                 user_id=user_id,
                 event_type=InteractionType.BOOKMARK.value,
@@ -360,15 +367,15 @@ class UserMemoryService:
             original_score = exp.score if exp.score is not None else 0.0
             affinity_score = 0.0
 
-            # 1. Category affinity signal (up to 0.5)
+            # 1. Category affinity signal (up to 0.25)
             if exp.category:
                 cat_norm = exp.category.lower().strip()
                 cat_weight = profile.preferred_categories.get(cat_norm, 0.0)
                 if cat_weight > 0:
-                    affinity_score += 0.5 * cat_weight
+                    affinity_score += 0.25 * cat_weight
                     signals_used.add("category")
 
-            # 2. Subcategory affinity signal (up to 0.50)
+            # 2. Subcategory affinity signal (up to 0.75)
             if exp.subcategories and profile.preferred_subcategories:
                 sub_match_sum = 0.0
                 for s in exp.subcategories:
@@ -377,7 +384,7 @@ class UserMemoryService:
                     if val > 0:
                         sub_match_sum += val
                 if sub_match_sum > 0:
-                    affinity_score += min(0.50, sub_match_sum * 1.25)
+                    affinity_score += 0.75 * min(1.0, sub_match_sum * 1.5)
                     signals_used.add("subcategories")
 
             # 3. Price compatibility signal (up to 0.25)
@@ -392,7 +399,7 @@ class UserMemoryService:
 
             # 4. Modest score calculation: S_final = S_rrf * (1.0 + alpha * affinity)
             if affinity_score > 0:
-                effective_weight = max(boost_weight, 0.30) if "subcategories" in signals_used else boost_weight
+                effective_weight = max(boost_weight, 0.50) if "subcategories" in signals_used else boost_weight
                 boost = 1.0 + (effective_weight * min(affinity_score, 1.0))
                 new_score = round(original_score * boost, 6)
                 any_adjusted = True

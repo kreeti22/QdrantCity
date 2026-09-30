@@ -20,10 +20,10 @@ export class FilterBar {
     };
     this.cities = [
       { id: "", label: "All Cities" },
-      { id: "Mumbai", label: "Mumbai" },
       { id: "Delhi", label: "Delhi" },
+      { id: "Goa", label: "Goa" },
+      { id: "Mumbai", label: "Mumbai" },
       { id: "Bengaluru", label: "Bengaluru" },
-      { id: "Pune", label: "Pune" },
     ];
     this.categories = [
       { id: "", label: "All Categories" },

@@ -20,6 +20,7 @@ import { EmptyState } from "../components/EmptyState.js";
 import { ErrorState } from "../components/ErrorState.js";
 import { ExperienceDetail } from "../components/ExperienceDetail.js";
 import { RouteModal } from "../components/RouteModal.js";
+import { ProfileModal } from "../components/ProfileModal.js";
 
 export class DiscoveryPage {
   constructor({ rootElement }) {
@@ -46,6 +47,7 @@ export class DiscoveryPage {
     this.emptyState = null;
     this.errorState = null;
     this.detailModal = null;
+    this.profileModal = null;
 
     this.init();
   }
@@ -118,7 +120,8 @@ export class DiscoveryPage {
           <div class="header-main-bar">
             <!-- Brand Logo -->
             <div class="brand-group" id="brand-home-btn" role="button" tabindex="0" title="Go to Home">
-              <span class="brand-name">Qdrant<span class="brand-highlight">Cinema</span></span>
+              <img src="./assets/logo.png" alt="QdrantCity Logo" class="brand-logo-img" />
+              <span class="brand-name">Qdrant<span class="brand-highlight">City</span></span>
               <span class="brand-badge">Local Edge</span>
             </div>
 
@@ -127,22 +130,21 @@ export class DiscoveryPage {
 
             <!-- Header Right Actions -->
             <div class="header-actions">
-              <div class="location-pill" title="India Metro Experiences">
+              <div class="location-pill" title="Delhi NCR & Goa Experiences">
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                   <circle cx="12" cy="10" r="3"></circle>
                 </svg>
-                <span>India (Mumbai · Delhi · Bengaluru · Pune)</span>
+                <span>Delhi & Goa (NCR · Goa · Mumbai · Bengaluru)</span>
               </div>
-              <button type="button" class="header-bookmarks-btn" id="header-bookmarks-btn" aria-label="View saved experiences">
-                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                </svg>
-                <span class="bookmarks-label">Saved</span>
-                <span class="bookmarks-count-pill" id="bookmarks-count-pill">0</span>
-              </button>
-              <button type="button" class="header-reset-btn" id="header-reset-btn" title="Clear local bookmarks and memory">
-                Reset Memory
+              <button type="button" class="header-profile-btn" id="header-profile-btn" aria-label="My Profile and Learned Memory">
+                <div class="profile-avatar-circle">
+                  <span>QC</span>
+                </div>
+                <div class="profile-btn-details">
+                  <span class="profile-btn-name">My Profile</span>
+                  <span class="profile-saved-badge" id="bookmarks-count-pill">0 Saved</span>
+                </div>
               </button>
             </div>
           </div>
@@ -162,9 +164,9 @@ export class DiscoveryPage {
               <button type="button" class="nav-tab" data-cat="exhibitions">Exhibitions</button>
             </div>
             <div class="nav-links-right">
-              <button type="button" class="sync-action-btn" id="sync-action-btn" title="Inspect Cloud Sync status and pull updates">
-                <span class="sync-badge local" id="sync-badge">Catalog: Local</span>
-                <span class="sync-action-label">🔄 Sync</span>
+              <button type="button" class="sync-action-btn" id="sync-action-btn" title="Inspect Edge Substrate status">
+                <span class="sync-badge local" id="sync-badge">Edge Substrate</span>
+                <span class="sync-action-label">⚡ Qdrant</span>
               </button>
             </div>
           </nav>
@@ -244,13 +246,13 @@ export class DiscoveryPage {
         <div id="detail-modal-mount"></div>
         <div id="sync-modal-mount"></div>
         <div id="route-modal-mount"></div>
+        <div id="profile-modal-mount"></div>
       </div>
     `;
 
-    // Bind header bookmarks, brand, nav tabs and reset buttons
+    // Bind brand, nav tabs and profile buttons
     const brandBtn = this.root.querySelector("#brand-home-btn");
-    const bookmarksBtn = this.root.querySelector("#header-bookmarks-btn");
-    const resetBtn = this.root.querySelector("#header-reset-btn");
+    const profileBtn = this.root.querySelector("#header-profile-btn");
     const navTabs = this.root.querySelectorAll(".nav-tab");
 
     if (brandBtn) {
@@ -275,15 +277,13 @@ export class DiscoveryPage {
       });
     });
 
-    bookmarksBtn.addEventListener("click", () => {
-      this.toggleBookmarksView();
-    });
-
-    resetBtn.addEventListener("click", async () => {
-      if (confirm("Reset all local bookmarks and memory for this device?")) {
-        await this.handleResetMemory();
-      }
-    });
+    if (profileBtn) {
+      profileBtn.addEventListener("click", () => {
+        if (this.profileModal) {
+          this.profileModal.open("taste");
+        }
+      });
+    }
 
     const syncActionBtn = this.root.querySelector("#sync-action-btn");
     if (syncActionBtn) {
@@ -382,6 +382,19 @@ export class DiscoveryPage {
       onClose: () => {},
       onShowRoute: (exp) => this.openRoute(exp),
     });
+
+    const profileModalMount = this.root.querySelector("#profile-modal-mount");
+    this.profileModal = new ProfileModal({
+      container: profileModalMount,
+      userId: this.userId,
+      onRoute: (exp) => this.openRoute(exp),
+      onBookmarkChange: async () => {
+        await this.refreshBookmarks();
+        if (this.state.query) {
+          await this.executeSearch(this.state.query);
+        }
+      },
+    });
   }
 
   openRoute(experience) {
@@ -397,7 +410,7 @@ export class DiscoveryPage {
       this.savedExperienceIds = new Set(ids);
       const pill = this.root.querySelector("#bookmarks-count-pill");
       if (pill) {
-        pill.textContent = String(this.savedExperienceIds.size);
+        pill.textContent = `${this.savedExperienceIds.size} Saved`;
       }
     } catch (e) {
       console.debug("Could not fetch bookmarks:", e);
@@ -573,7 +586,7 @@ export class DiscoveryPage {
 
       const pill = this.root.querySelector("#bookmarks-count-pill");
       if (pill) {
-        pill.textContent = String(this.savedExperienceIds.size);
+        pill.textContent = `${this.savedExperienceIds.size} Saved`;
       }
 
       if (this.isShowingBookmarks) {
@@ -614,7 +627,7 @@ export class DiscoveryPage {
 
       const pill = this.root.querySelector("#bookmarks-count-pill");
       if (pill) {
-        pill.textContent = String(this.savedExperienceIds.size);
+        pill.textContent = `${this.savedExperienceIds.size} Saved`;
       }
 
       if (exps.length === 0) {
@@ -643,7 +656,7 @@ export class DiscoveryPage {
       await apiClient.resetUserMemory(this.userId);
       this.savedExperienceIds.clear();
       const pill = this.root.querySelector("#bookmarks-count-pill");
-      if (pill) pill.textContent = "0";
+      if (pill) pill.textContent = "0 Saved";
 
       if (this.isShowingBookmarks) {
         await this.showBookmarksView();

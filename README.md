@@ -1,8 +1,8 @@
-# QdrantCinema — Local Intelligence Substrate
+# QdrantCity — Local Intelligence Substrate
 
 > **Architectural Principle:** Qdrant Edge is the local intelligence substrate, not an add-on vector database.
 
-QdrantCinema is an **offline-first city experiences discovery platform** powered by Qdrant Edge running fully in-process — no cloud LLM, no external embedding API, no external search server.
+QdrantCity is an **offline-first city experiences & event discovery platform** powered by Qdrant Edge running fully in-process — no cloud LLM, no external embedding API, no external search server.
 
 ## ⚡ Quick Start (5 minutes)
 
@@ -625,7 +625,7 @@ QdrantCinema includes an **in-process offline routing engine** powered by Networ
 
 To verify 100% offline operation:
 
-1. **Start QdrantCinema:**
+1. **Start QdrantCity:**
    ```bash
    uvicorn app.main:app --host 0.0.0.0 --port 8000
    ```

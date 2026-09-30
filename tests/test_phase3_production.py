@@ -101,6 +101,20 @@ class TestPhase3AConfig:
         s = Settings(log_level="WARNING")
         assert s.log_level == "WARNING"
 
+    def test_cors_origins_various_formats(self, monkeypatch):
+        """CORS origins should parse raw strings, comma-separated lists, JSON arrays, and wildcards without crashing."""
+        monkeypatch.setenv("QDRANT_EDGE_CORS_ORIGINS", "*")
+        assert Settings().cors_origins == ["*"]
+
+        monkeypatch.setenv("QDRANT_EDGE_CORS_ORIGINS", "")
+        assert Settings().cors_origins == ["*"]
+
+        monkeypatch.setenv("QDRANT_EDGE_CORS_ORIGINS", "https://app1.com, https://app2.com")
+        assert Settings().cors_origins == ["https://app1.com", "https://app2.com"]
+
+        monkeypatch.setenv("QDRANT_EDGE_CORS_ORIGINS", '["https://example.com"]')
+        assert Settings().cors_origins == ["https://example.com"]
+
     def test_env_example_exists(self):
         """.env.example file must be present in repository root."""
         assert os.path.exists(".env.example"), ".env.example is missing"
