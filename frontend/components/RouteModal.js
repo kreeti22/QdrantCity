@@ -11,7 +11,7 @@
  * - Required "Map data © OpenStreetMap contributors" attribution
  */
 
-import { apiClient } from "../api/client.js";
+import { apiClient } from "../services/client.js";
 import { escapeHtml } from "../utilities/formatting.js";
 
 export const START_PRESETS = [
