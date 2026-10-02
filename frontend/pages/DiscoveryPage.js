@@ -21,6 +21,8 @@ import { ErrorState } from "../components/ErrorState.js";
 import { ExperienceDetail } from "../components/ExperienceDetail.js";
 import { RouteModal } from "../components/RouteModal.js";
 import { ProfileModal } from "../components/ProfileModal.js";
+import { TrekAIChatIcon } from "../components/TrekAIChatIcon.js";
+import { TrekAIChat } from "../components/TrekAIChat.js";
 
 export class DiscoveryPage {
   constructor({ rootElement }) {
@@ -48,19 +50,18 @@ export class DiscoveryPage {
     this.errorState = null;
     this.detailModal = null;
     this.profileModal = null;
+    this.trekAIIcon = null;
+    this.trekAIChat = null;
+    this.isTrekAIChatOpen = false;
 
     this.init();
   }
 
   async init() {
+    await this.loadSystemInfo();
     this.renderLayout();
     this.initComponents();
-    await this.loadSystemInfo();
-    this.renderDemoStatusPanel();
-    await this.refreshBookmarks();
-    await this.refreshSyncStatus();
-    // Perform initial discovery so user sees clean cards right away
-    this.executeSearch("all experiences");
+    this.initTrekAI();
   }
 
   async loadSystemInfo() {
@@ -242,6 +243,9 @@ export class DiscoveryPage {
           </div>
         </footer>
 
+        <!-- TrekAI Chat Icon Mount -->
+        <div id="trekai-chat-icon-mount" class="trekai-chat-icon-mount"></div>
+
         <!-- Modal Mount -->
         <div id="detail-modal-mount"></div>
         <div id="sync-modal-mount"></div>
@@ -320,6 +324,10 @@ export class DiscoveryPage {
         this.isShowingBookmarks = false;
         this.executeSearch(q);
       },
+      onVoiceInput: (q) => {
+        // Voice input completed - search is handled by the input handler
+        console.log("Voice input received:", q);
+      },
     });
 
     this.queryChips = new QueryChips({
@@ -395,6 +403,62 @@ export class DiscoveryPage {
         }
       },
     });
+  }
+
+  initTrekAI() {
+    const iconMount = this.root.querySelector("#trekai-chat-icon-mount");
+    if (!iconMount) return;
+
+    this.trekAIIcon = new TrekAIChatIcon({
+      onClick: () => {},
+      onOpenChat: (isOpen) => {
+        this.isTrekAIChatOpen = isOpen;
+        if (isOpen) {
+          this.openTrekAIChat();
+        }
+      },
+    });
+
+    iconMount.appendChild(this.trekAIIcon.getContainer());
+  }
+
+  openTrekAIChat() {
+    // If chat is already open, just update the icon state
+    if (this.trekAIChat) {
+      return;
+    }
+
+    // Create chat panel mount
+    const chatPanel = document.createElement("div");
+    chatPanel.className = "trekai-chat-panel-mount";
+    this.root.appendChild(chatPanel);
+
+    this.trekAIChat = new TrekAIChat({
+      container: chatPanel,
+      onClose: () => {
+        this.closeTrekAIChat();
+      },
+    });
+  }
+
+  closeTrekAIChat() {
+    this.isTrekAIChatOpen = false;
+    
+    if (this.trekAIChat) {
+      this.trekAIChat.destroy();
+      this.trekAIChat = null;
+    }
+    
+    // Remove the chat panel from DOM
+    const chatPanel = this.root.querySelector(".trekai-chat-panel-mount");
+    if (chatPanel && chatPanel.parentNode) {
+      chatPanel.parentNode.removeChild(chatPanel);
+    }
+    
+    // Update icon state
+    if (this.trekAIIcon) {
+      this.trekAIIcon.toggleChat();
+    }
   }
 
   openRoute(experience) {

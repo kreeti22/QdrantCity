@@ -206,6 +206,31 @@ class ApiClient {
       return null;
     }
   }
+
+  async chat(message, context = {}) {
+    return this._request("/api/chat", {
+      method: "POST",
+      body: JSON.stringify({ message, context }),
+    });
+  }
+
+  async getTrekAIStatus() {
+    try {
+      return await this._request("/api/chat/status", { method: "GET" });
+    } catch (e) {
+      console.debug("Could not fetch TrekAI status:", e);
+      return null;
+    }
+  }
+
+  async getTrekAIIntents() {
+    try {
+      return await this._request("/api/chat/intents", { method: "GET" });
+    } catch (e) {
+      console.debug("Could not fetch TrekAI intents:", e);
+      return null;
+    }
+  }
 }
 
 export const apiClient = new ApiClient();

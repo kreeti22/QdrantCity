@@ -306,6 +306,10 @@ def create_app(settings: Optional[Settings] = None) -> FastAPI:
         )
 
     app.include_router(router)
+    
+    # TrekAI chatbot routes
+    from app.api.trekai_routes import router as trekai_router
+    app.include_router(trekai_router, prefix="/api", tags=["TrekAI"])
 
     # Serve the production assets at the backend origin, retaining /ui for compatibility.
     frontend_dir = Path(__file__).resolve().parent.parent / "static"

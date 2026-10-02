@@ -166,9 +166,9 @@ class LocalQueryParser:
             # Check 5+ consecutive consonants (unpronounceable in natural text)
             if re.search(r"[^aeiouy\s]{5,}", w):
                 return True
-            # Low vowel ratio on long words (length >= 6 with < 18% vowels)
+            # Low vowel ratio on long words (length >= 6 with < 15% vowels)
             v_count = sum(1 for c in w if c in vowels)
-            if len(w) >= 6 and (v_count == 0 or (v_count / len(w) < 0.18)):
+            if len(w) >= 6 and (v_count == 0 or (v_count / len(w) < 0.15)):
                 return True
 
         return False

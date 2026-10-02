@@ -652,3 +652,193 @@ To verify 100% offline operation:
    - Results are retrieved instantaneously from local Qdrant Edge.
    - Click **`[Route]`** on any result.
    - Confirm the route is still calculated locally via local OSM NetworkX Dijkstra graph with polyline geometry rendered completely offline.
+---
+
+## 11. Phase 4: TrekAI - Fully Offline Chatbot Integration
+
+TrekAI is a **100% offline chatbot** integrated into QdrantCity that helps you discover events, plan routes, check management statistics, and get guidance on using the app - all without internet access.
+
+### 11.1 Overview
+
+TrekAI uses **local intent detection and template-based responses** to provide a conversational interface while maintaining the offline-first architecture of QdrantCity.
+
+```text
+                    USER QUERY
+                         ↓
+              Local Intent Detection
+           (Rule-based, No External APIs)
+                         ↓
+        ┌────────────────────────────────┐
+        │ Context Preservation           │
+        │ - City                         │
+        │ - Category                     │
+        │ - Last Event Viewed            │
+        │ - Recent Queries               │
+        └──────────────┬─────────────────┘
+                       ↓
+              Intent Handler
+        ┌──────────────┴─────────────────┐
+        │ Event Discovery                │
+        │ Event Details                  │
+        │ Route Planning                 │
+        │ Saved Events                   │
+        │ Management Statistics          │
+        │ App Guidance                   │
+        └──────────────┬─────────────────┘
+                       ↓
+              Response Generation
+           (Template + Local Data)
+```
+
+### 11.2 Key Features
+
+| Feature | Description |
+|---------|-------------|
+| **100% Offline** | No cloud LLM, external APIs, or network calls |
+| **Local Intent Detection** | Rule-based parsing with keyword matching |
+| **Template Responses** | Grounded in local event data |
+| **Voice Input** | Browser-based offline speech recognition |
+| **Context Preservation** | Follow-up questions work correctly |
+| **Privacy First** | All conversations stay on device |
+
+### 11.3 Supported Queries
+
+| Query Type | Examples |
+|------------|----------|
+| Greeting | "hello", "hi there", "good morning" |
+| Event Search | "find sports events in Delhi", "show concerts tonight" |
+| Event Details | "tell me about Dune", "event details" |
+| Routes | "plan route", "how to get there", "navigate" |
+| Statistics | "show stats", "how many events", "total bookmarks" |
+| Saved Events | "my bookmarks", "saved events", "favorites" |
+| Guidance | "how to use", "what can you do", "guide" |
+
+### 11.4 API Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/chat` | POST | Process chat message |
+| `/api/chat/status` | GET | Service status |
+| `/api/chat/intents` | GET | List supported intents |
+
+### 11.5 Usage
+
+1. **Start the server:**
+   ```bash
+   uvicorn app.main:app --host 0.0.0.0 --port 8000
+   ```
+
+2. **Open QdrantCity:**
+   ```
+   http://localhost:8000/
+   ```
+
+3. **Click the TrekAI icon** (bottom-right corner) to open the chat panel
+
+4. **Start asking questions!**
+
+### 11.6 Voice Input
+
+TrekAI supports **offline voice input** using Web Speech API:
+
+1. Click the microphone button in the chat panel or search bar
+2. Speak your query
+3. The recognized text appears in the input field
+4. Press Enter or click Send to submit
+
+**Browser Requirements:**
+- Chrome/Edge: Full support
+- Safari: Partial support
+- Firefox: Enable `media.cubeb.enabled` flag
+
+**Fallback:** If voice input isn't available, you'll see a helpful message and can type your query instead.
+
+### 11.7 Architecture
+
+```
+TrekAI/
+├── models.py          # Intent definitions, response templates
+├── service.py         # Offline NLP engine, intent detection
+└── api/
+    └── trekai_routes.py  # FastAPI endpoints
+```
+
+**Key Design Decisions:**
+- **No LLM required**: Works without local LLM using templates
+- **Context stored client-side**: Reduces server load
+- **Local event data**: All responses grounded in Qdrant Edge data
+- **No network fallbacks**: True offline operation
+
+### 11.8 Integration Points
+
+TrekAI integrates with existing QdrantCity components:
+
+| Component | Usage |
+|-----------|-------|
+| Qdrant Edge | Local event retrieval |
+| Intent Parser | Query understanding |
+| Memory Service | User preferences & bookmarks |
+| Routing Service | Offline route calculation |
+| FastEmbed | Semantic event matching |
+
+### 11.9 Testing
+
+Run the offline acceptance tests:
+
+```bash
+pytest tests/test_trekai_offline.py -v
+```
+
+**Test Coverage:**
+1. ✅ TrekAI opens and responds with internet disconnected
+2. ✅ Local event discovery works through Qdrant Edge
+3. ✅ NLP intent detection works without external services
+4. ✅ Replies are grounded in local event records
+5. ✅ Follow-up questions preserve event and city context
+6. ✅ Preferences work from local memory
+7. ✅ Route requests use locally available OSM data
+8. ✅ Management statistics match actual database counts
+9. ✅ Sports filtering returns matching records when present
+10. ✅ Voice controls use offline engine or report unavailable setup
+11. ✅ Network-disabled tests confirm no cloud LLM requests
+12. ✅ Existing search, filters, maps remain functional
+
+### 11.10 File Changes
+
+**Backend:**
+- `app/api/trekai_routes.py` - New: Chatbot API endpoints
+- `app/trekai/models.py` - New: Models and templates
+- `app/trekai/service.py` - New: Offline NLP engine
+- `app/main.py` - Modified: Added TrekAI router
+- `app/retrieval/filter_builder.py` - Modified: Added debug logging
+
+**Frontend:**
+- `frontend/components/TrekAIChatIcon.js` - New: Floating chat icon
+- `frontend/components/TrekAIChat.js` - New: Chat panel
+- `frontend/pages/DiscoveryPage.js` - Modified: Integrated TrekAI
+- `frontend/components/SearchBar.js` - Modified: Added voice input
+- `frontend/services/client.js` - Modified: Added TrekAI API methods
+
+**Tests:**
+- `tests/test_trekai_offline.py` - New: Offline acceptance tests
+
+### 11.11 Limitations
+
+1. **Voice Input**: Requires browser Web Speech API support
+2. **Response Generation**: Template-based (not generative AI)
+3. **Language**: Currently English-only intent detection
+4. **Offline Routes**: Uses local OSM data (Delhi region by default)
+
+### 11.12 Documentation
+
+See `TREKAI_README.md` for complete documentation including:
+- Detailed architecture
+- API reference
+- Development guide
+- Adding new intents and templates
+
+---
+
+## Phase 3 — Production Hardening, Deployment & Demo Readiness
+
+Phase 3 ha

@@ -31,8 +31,10 @@ class FilterBuilder:
         must_not_conditions: List[FieldCondition] = []
 
         if params.category and params.category.strip():
+            cat_value = params.category.strip().lower()
+            logger.debug(f"Building category filter: '{cat_value}' (original: '{params.category}')")
             must_conditions.append(
-                FieldCondition(key="category", match=MatchValue(params.category.strip().lower()))
+                FieldCondition(key="category", match=MatchValue(cat_value))
             )
 
         if params.city and params.city.strip():
@@ -129,6 +131,7 @@ class FilterBuilder:
             if val:
                 cat_val = val
         if cat_val:
+            logger.debug(f"Building category filter from intent: '{cat_val}'")
             must_conditions.append(FieldCondition(key="category", match=MatchValue(cat_val)))
 
         # 2. City (override takes precedence)
